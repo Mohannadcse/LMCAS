@@ -1,0 +1,4 @@
+[submodule "LLVM_Passes"]
+	path = "LLVM_Passes"
+	url = "https://github.com/Mohannadcse/LLVM_Debloating_Passes.git"
+ 
