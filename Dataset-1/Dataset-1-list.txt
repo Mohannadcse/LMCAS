@@ -1,0 +1,15 @@
+basename
+basenc
+comm
+date
+du
+echo
+fmt
+fold
+head
+id
+kill
+realpath
+sort
+uniq
+wc
