@@ -190,6 +190,7 @@ main (int argc, char **argv)
         argc--;
         argv++;
       }
+      klee_dump_memory();
 
 just_echo:
 
@@ -249,7 +250,6 @@ just_echo:
                     not_an_escape:
                     default:  putchar ('\\'); break;
                     }
-		klee_dump_memory();
                 }
               putchar (c);
             }
@@ -258,6 +258,7 @@ just_echo:
           if (argc > 0)
             putchar (' ');
         }
+        // klee_dump_memory();
     }
   else
     {
@@ -270,6 +271,7 @@ just_echo:
             putchar (' ');
         }
     }
+
 
   if (display_return)
     putchar ('\n');

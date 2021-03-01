@@ -43,7 +43,7 @@ RUN echo "Install klee-uclibc" && \
     make -j2
 
 
-ADD debloat KLEE
+ADD partial-interpretation KLEE
 ADD LLVM_Passes LLVM_Passes_src
 
 WORKDIR build/KLEE
