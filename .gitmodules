@@ -2,3 +2,6 @@
 	path = "LLVM_Passes"
 	url = "https://github.com/Mohannadcse/LLVM_Debloating_Passes.git"
  
+[submodule "partial-interpretation"]
+	path = "partial-interpretation"
+	url = "https://github.com/Mohannadcse/Modified_KLEE.git"
