@@ -1,8 +1,8 @@
 # Building LMCAS Docker Machine #
 After Unzipping the compressed file, execute the following commands to build and run LMCAS. The build process takes sometime because it involves downloading and building both of LLVM and KLEE.
 ```shell
-docker build -t lmcas .
-docker run -it lmcas
+docker build -t lmcas_tutorial .
+docker run -it lmcas_tutorial
 ```
 
 
@@ -10,8 +10,9 @@ docker run -it lmcas
 We provide the source code of the apps used in the evaluation `after adding the neck`. But you need to compile these programs using `wllvm`. To avoid compilation, we also provided the bitcode of these apps. So actually you don't need to do the whole program. The bitcode of the apps can be found under the directory `artifacts_bitcode`.
 
 + `buildDataset.sh`: can be used for building the apps using `wllvm`
-+ `runAnalysis.sh`: can be used for running LMCAS analysis. You just need to provide the program bitcode. Follw the examples provided in the `runAnalysis.sh`. After running the analysis, a new directory will be created that contains all results belong to the debloated app. The directory name starts with `debloate_`.
++ `runDemo.sh`: can be used for running LMCAS analysis. You just need to provide the program bitcode. Follw the examples provided in the `runDemo.sh`. After running the analysis, a new directory will be created that contains all results belong to the debloated app. The directory name starts with `debloate_`.
 
+TODO: Add script for Python. Pretty Print results.
 For replicating our evaluation, you can run the analysis according to the settings mentioned in this [TABLE](https://sites.google.com/view/lmcas/home#h.r7u6w8uktrgc)
 
 NOTE: our debloating strategy strategy relies on the fact that we can split the app into configuration part and main logic part. Therefore, the specialized programs are generated w.r.t the required functionality. For example, you want `wc` to only count number of lines i.e., `wc -l`. So you don't need to provide the file name to our script `runAnalysis.sh`, which makes the command as follows `./runAnalysis.sh --file=./bitcode_files/wc.bc --args=-l`.
