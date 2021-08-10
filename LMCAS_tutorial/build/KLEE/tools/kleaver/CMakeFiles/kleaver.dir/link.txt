@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Wextra -Wno-unused-parameter -O2 -g  -rdynamic CMakeFiles/kleaver.dir/main.cpp.o  -o ../../bin/kleaver -Wl,-rpath,/usr/lib/llvm-6.0/lib: ../../lib/libkleaverSolver.a ../../lib/libkleeBasic.a ../../lib/libkleaverExpr.a ../../lib/libkleeSupport.a -lz -ltcmalloc /usr/lib/llvm-6.0/lib/libLLVM-6.0.so -lz3 

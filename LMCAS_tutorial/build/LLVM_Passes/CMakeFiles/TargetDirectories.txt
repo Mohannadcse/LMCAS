@@ -1,0 +1,9 @@
+/build/LLVM_Passes/CMakeFiles/rebuild_cache.dir
+/build/LLVM_Passes/CMakeFiles/intrinsics_gen.dir
+/build/LLVM_Passes/CMakeFiles/edit_cache.dir
+/build/LLVM_Passes/Debloat/CMakeFiles/rebuild_cache.dir
+/build/LLVM_Passes/Debloat/CMakeFiles/LLVMDebloat.dir
+/build/LLVM_Passes/Debloat/CMakeFiles/edit_cache.dir
+/build/LLVM_Passes/Profiler/CMakeFiles/rebuild_cache.dir
+/build/LLVM_Passes/Profiler/CMakeFiles/LLVMPprofiler.dir
+/build/LLVM_Passes/Profiler/CMakeFiles/edit_cache.dir

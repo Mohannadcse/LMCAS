@@ -1,0 +1,2 @@
+/build/KLEE/runtime/runtime_build_Debug+Asserts/klee-libc/memchr.bc: \
+  /KLEE/runtime/klee-libc/memchr.c

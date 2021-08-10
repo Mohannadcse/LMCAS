@@ -1,0 +1,2 @@
+/build/KLEE/runtime/runtime_build_Debug+Asserts/klee-libc/strncpy.bc: \
+  /KLEE/runtime/klee-libc/strncpy.c

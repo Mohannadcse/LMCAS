@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/build/KLEE/runtime/CMakeFiles/BuildKLEERuntimes"
+		},
+		{
+			"file" : "/build/KLEE/runtime/CMakeFiles/BuildKLEERuntimes.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/CMakeFiles/BuildKLEERuntimes-complete.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-install.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-mkdir.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-download.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-update.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-patch.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-configure.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-build.rule"
+		},
+		{
+			"file" : "/build/KLEE/runtime/BuildKLEERuntimes-prefix/src/BuildKLEERuntimes-stamp/BuildKLEERuntimes-RuntimeBuild.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"BuildKLEERuntimes"
+		],
+		"name" : "BuildKLEERuntimes"
+	}
+}

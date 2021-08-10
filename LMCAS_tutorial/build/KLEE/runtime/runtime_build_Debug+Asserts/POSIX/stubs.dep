@@ -1,0 +1,4 @@
+/build/KLEE/runtime/runtime_build_Debug+Asserts/POSIX/stubs.bc: \
+  /KLEE/runtime/POSIX/stubs.c /build/KLEE/include/klee/Config/config.h
+
+/build/KLEE/include/klee/Config/config.h:

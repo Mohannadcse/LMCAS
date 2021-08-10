@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared  -o libLLVMPprofiler.so CMakeFiles/LLVMPprofiler.dir/Profiler.cpp.o  -L/usr/lib/llvm-6.0/lib 

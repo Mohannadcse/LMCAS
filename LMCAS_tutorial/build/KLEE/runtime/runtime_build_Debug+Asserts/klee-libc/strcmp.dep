@@ -1,0 +1,2 @@
+/build/KLEE/runtime/runtime_build_Debug+Asserts/klee-libc/strcmp.bc: \
+  /KLEE/runtime/klee-libc/strcmp.c

@@ -1,0 +1,4 @@
+/build/KLEE/runtime/runtime_build_Debug+Asserts/POSIX/selinux.bc: \
+  /KLEE/runtime/POSIX/selinux.c /build/KLEE/include/klee/Config/config.h
+
+/build/KLEE/include/klee/Config/config.h:

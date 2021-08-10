@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/KLEE/include/klee/Internal/ADT/KTest.h
+
+/KLEE/include/klee/klee.h
+stdint.h
+/KLEE/include/klee/stdint.h
+stddef.h
+/KLEE/include/klee/stddef.h
+
+/KLEE/runtime/Runtest/intrinsics.c
+assert.h
+-
+stdarg.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/mman.h
+-
+sys/time.h
+-
+time.h
+-
+klee/klee.h
+/KLEE/runtime/Runtest/klee/klee.h
+klee/Internal/ADT/KTest.h
+/KLEE/runtime/Runtest/klee/Internal/ADT/KTest.h
+
