@@ -9,6 +9,7 @@ RUN echo "Build type set to: Release" && \
     apt-get update && \
     apt-get install -y wget libprotobuf-dev python-protobuf protobuf-compiler && \
     apt-get install -y python-pip && \
+    apt-get install -y python3-dev && \
     apt-get install -y python3-pip && \
     #apt-get install -y z3 && \
     apt-get install -y libz3-dev && \
@@ -43,6 +44,9 @@ RUN echo "Install klee-uclibc" && \
 
 RUN echo "Install ROPGadget" && \
     pip3 install capstone && \
+    pip3 install numpy && \
+    pip3 install matplotlib && \
+    pip3 install pandas && \
     pip3 install ropgadget 
 ADD build        build
 WORKDIR /usr/local/bin
@@ -59,6 +63,9 @@ COPY runAnalysis.sh  runAnalysis.sh
 COPY ropAnalysis.sh  ropAnalysis.sh
 COPY staticAnalysis.sh  staticAnalysis.sh
 COPY runDemo.sh  runDemo.sh
+COPY testScript.sh testScript.sh
+COPY create_histograms.py create_histograms.py
+
 
 ENV LLVM_CC_NAME clang-6.0
 ENV LLVM_CXX_NAME clang++-6.0

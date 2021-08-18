@@ -12,16 +12,17 @@ onlyJOP=-1
 onlySYS=-1
 onlyROP=-1
 #echo "Compute TOTAL"
-ROPgadget --binary $1 > tmp.txt
-total=`tail -1 tmp.txt | cut -d ' ' -f4`
+ROPgadget --binary $1 > rop_results_$1.txt
+total=`tail -1 rop_results_$1.txt | cut -d ' ' -f4`
 #echo "Compute ONLY JOP"
-ROPgadget --norop --nosys --binary $1 > tmp.txt
-onlyJOP=`tail -1 tmp.txt | cut -d ' ' -f4`
+ROPgadget --norop --nosys --binary $1 > rop_results_$1.txt
+onlyJOP=`tail -1 rop_results_$1.txt | cut -d ' ' -f4`
 #echo "Compute ONLY SYS"
-ROPgadget --nojop --norop --binary $1 > tmp.txt
-onlySYS=`tail -1 tmp.txt | cut -d ' ' -f4`
+ROPgadget --nojop --norop --binary $1 > rop_results_$1.txt
+onlySYS=`tail -1 rop_results_$1.txt | cut -d ' ' -f4`
 #echo "Compute ONLY ROP"
-ROPgadget --nojop --nosys --binary $1 > tmp.txt
-onlyROP=`tail -1 tmp.txt | cut -d ' ' -f4`
-echo $fbname,$total,$onlyJOP,$onlySYS,$onlyROP >> ${2}.csv
-tail -1 tmp.txt
+ROPgadget --nojop --nosys --binary $1 > rop_results_$1.txt
+onlyROP=`tail -1 rop_results_$1.txt | cut -d ' ' -f4`
+echo fbname,total,onlyJOP,onlySYS,onlyROP >> ../rop_results_$1.csv
+echo $fbname,$total,$onlyJOP,$onlySYS,$onlyROP >> ../rop_results_$1.csv
+tail -1 rop_results_$1.txt

@@ -156,18 +156,10 @@ opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_orig} -o /dev/null ${app}_orig.bc
 
 opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
- -Pprofiler -size=${size_cc} -o /dev/null ${app}_cc.bc
-
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
- -Pprofiler -size=${size_cp} -o /dev/null ${app}_cp.bc
-
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
- -Pprofiler -size=${size_ps} -o /dev/null ${app}_ps.bc
-
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cu} -o /dev/null ${app}_cu.bc
 
-cat report.csv
+#cat report.csv
+cp report.csv ../report.csv
 echo "Running ROP comparisions"
 echo "Number of ROP instructions in original binary"
 cp ../ropAnalysis.sh .
@@ -177,6 +169,8 @@ echo "Number of ROP instructions in debloated binary"
 ./ropAnalysis.sh ${app}_cu
 rm ropAnalysis.sh
 
+cd ..
+python3 create_histograms.py ${app} rop_results_${app}_orig.csv rop_results_${app}_cu.csv report.csv
 
 #rm *.txt
 #rm *.o 
