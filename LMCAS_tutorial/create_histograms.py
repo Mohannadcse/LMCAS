@@ -23,7 +23,7 @@ headers = list(ts)
 ts = ts.to_numpy()
 percentage_change = []
 for c in ts.transpose():
-    percentage_change.append(calculatePercentChange(c[0],c[1]))
+    percentage_change.append(format(calculatePercentChange(c[0],c[1]),'.1f'))
 foo = headers[1]
 headers[1] = headers[2]
 headers[2] = foo
@@ -32,9 +32,12 @@ bar = percentage_change[1]
 percentage_change[1] = percentage_change[2]
 percentage_change[2] = bar
 
+print("\tStatistics comparing original and debloated binaries")
+print(df)
+print('=========================================================================================')
+print("\tRate In Reductions")
 print(headers)
 print(percentage_change)
-print(df)
 
 x = np.arange(len(headers))
 width = 0.35
