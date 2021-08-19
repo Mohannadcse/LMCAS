@@ -27,6 +27,9 @@ RUN echo "Build type set to: Release" && \
     apt-get install nano && \
     apt-get install -y libibverbs-dev  
 
+RUN echo "update pip3"  && \
+    pip3 install -U pip 
+
 RUN echo "Install WLLVM" && \
     pip3 install -U lit tabulate wllvm
     
