@@ -18,12 +18,19 @@ rop_report = rop_report.drop(columns=['index'])
 stats = pd.read_csv(sys.argv[4])
 df = stats.join(rop_report)
 ts = df.drop(columns=['AppName','Pass'])
-ts.columns = ['Instructions','Functions', 'Basic Blocks', 'Size', 'Dangerous Instructions','JOP Instructions', 'SYS instructions', 'ROP instructions']
+ts.columns = ['IR inst','Functions', 'Basic Blocks', 'Binary Size', 'Total Gadgets','JOP', 'SYS', 'ROP']
 headers = list(ts)
 ts = ts.to_numpy()
 percentage_change = []
 for c in ts.transpose():
     percentage_change.append(calculatePercentChange(c[0],c[1]))
+foo = headers[1]
+headers[1] = headers[2]
+headers[2] = foo
+
+bar = percentage_change[1]
+percentage_change[1] = percentage_change[2]
+percentage_change[2] = bar
 
 print(headers)
 print(percentage_change)
