@@ -165,13 +165,16 @@ rm report.csv
 #echo "Number of ROP instructions in original binary"
 cp ../ropAnalysis.sh .
 ./ropAnalysis.sh ${app}_orig &>/dev/null
-
 #echo "Number of ROP instructions in debloated binary"
 ./ropAnalysis.sh ${app}_cu &>/dev/null
 rm ropAnalysis.sh
 
+
 cd ..
 python3 create_histograms.py ${app} rop_results_${app}_orig.csv rop_results_${app}_cu.csv report.csv
+echo "You can find histograms showing debloating reductions in the debloate_${app} directory"
+printf "\n***************************\n" 
+mv *.png debloate_${app}
 rm report.csv
 #rm *.txt
 #rm *.o 
