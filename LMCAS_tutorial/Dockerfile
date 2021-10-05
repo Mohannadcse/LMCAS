@@ -63,7 +63,7 @@ ADD source_code_files source_code_files
 COPY ropAnalysis.sh  ropAnalysis.sh
 COPY statistics.sh stats.sh 
 COPY runDemo.sh  runDemo.sh
-COPY testScript.sh testScript.sh
+COPY testScript.sh testRunDemo.sh
 COPY create_histograms.py create_histograms.py
 
 

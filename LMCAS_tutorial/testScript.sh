@@ -1,1 +1,1 @@
-./runDemo.sh --file:artifacts_bitcode/Dataset-1/wc_orig.bc --args:"-l"
+./runDemo.sh --file:bitcode_files/wc_orig.bc --args:"-l"
