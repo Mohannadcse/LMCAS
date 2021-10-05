@@ -73,7 +73,7 @@ opt-6.0 -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat -cleanUp \
     ${app}_ps.bc -verify -o ${app}_cu.bc
 
 
-echo "Generate binay files..."
+echo "Generate binary files..."
 
 tcpdumpFlg=0
 if [[ $app == *"tcpdump"* ]]
@@ -132,26 +132,26 @@ fi
 
 runSize=`size ${app}_orig`
 size_orig=`echo $runSize | cut -d ' ' -f10`
-echo size_orig=${size_orig}
+#echo size_orig=${size_orig}
 
 runSize=`size ${app}_cc`
 size_cc=`echo $runSize | cut -d ' ' -f10`
-echo size_cc=${size_cc}
+#echo size_cc=${size_cc}
 
 runSize=`size ${app}_cp`
 size_cp=`echo $runSize | cut -d ' ' -f10`
-echo size_cp=${size_cp}
+#echo size_cp=${size_cp}
 
 runSize=`size ${app}_ps`
 size_ps=`echo $runSize | cut -d ' ' -f10`
-echo size_ps=${size_ps}
+#echo size_ps=${size_ps}
 
 runSize=`size ${app}_cu`
 size_cu=`echo $runSize | cut -d ' ' -f10`
-echo size_cu=${size_cu}
+#echo size_cu=${size_cu}
 
 
-echo "Statistical info..."
+#echo "Statistical info..."
 opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_orig} -o /dev/null ${app}_orig.bc
 
@@ -161,13 +161,13 @@ opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
 #cat report.csv
 cp report.csv ../report.csv
 rm report.csv
-echo "Running ROP comparisions"
-echo "Number of ROP instructions in original binary"
+#echo "Running ROP comparisions"
+#echo "Number of ROP instructions in original binary"
 cp ../ropAnalysis.sh .
 ./ropAnalysis.sh ${app}_orig &>/dev/null
 
-echo "Number of ROP instructions in debloated binary"
-./ropAnalysis.sh ${app}_cu
+#echo "Number of ROP instructions in debloated binary"
+./ropAnalysis.sh ${app}_cu &>/dev/null
 rm ropAnalysis.sh
 
 cd ..

@@ -28,13 +28,28 @@ foo = headers[1]
 headers[1] = headers[2]
 headers[2] = foo
 
+
 bar = percentage_change[1]
 percentage_change[1] = percentage_change[2]
 percentage_change[2] = bar
 
-print(headers)
-print(percentage_change)
-print(df)
+print("\n***************************\n")
+print("Stats generated")
+pd.options.mode.chained_assignment = None
+df['Pass'][1] = "debloated"
+print(df.to_string(index=False))
+
+print("\n***************************\n")
+print("\tPercentage Reduced\t")
+i = 0
+for f in percentage_change:
+	if i > 0 and i < 5:
+		print(headers[i]+"\t\t"+str(round(f,2)))
+	else:
+		print(headers[i]+"\t\t\t"+str(round(f,2)))
+	i = i + 1
+print("\n***************************\n")
+
 
 x = np.arange(len(headers))
 width = 0.35
