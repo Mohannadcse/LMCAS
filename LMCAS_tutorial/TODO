@@ -1,6 +1,0 @@
-Notes:
-	The python script works really well on my ubuntu, but does not seem to want to work on docker
-	Seems like the reason for this is one of the functions I am using is quite recent and the ver-	      sion of matplotlib on docker does not like that.
-
-	Will take a look at the issue later, hoping you can help out with configuring the docker 
-	correctly
