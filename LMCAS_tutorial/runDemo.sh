@@ -164,7 +164,7 @@ rm report.csv
 echo "Running ROP comparisions"
 echo "Number of ROP instructions in original binary"
 cp ../ropAnalysis.sh .
-./ropAnalysis.sh ${app}_orig
+./ropAnalysis.sh ${app}_orig &>/dev/null
 
 echo "Number of ROP instructions in debloated binary"
 ./ropAnalysis.sh ${app}_cu
@@ -175,5 +175,4 @@ python3 create_histograms.py ${app} rop_results_${app}_orig.csv rop_results_${ap
 rm report.csv
 #rm *.txt
 #rm *.o 
-
-echo klee --libc=uclibc --posix-runtime --dump-file gbls.txt $appFullPath $args
+rm *.csv
