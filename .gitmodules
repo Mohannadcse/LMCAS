@@ -1,6 +1,6 @@
 [submodule "LLVM_Passes"]
-	path = "LLVM_Passes"
-	url = "git@github.com:Mohannadcse/LLVM_Debloating_Passes.git"
+	path = LLVM_Passes
+	url = git@github.com:Mohannadcse/LLVM_Debloating_Passes.git
  
 [submodule "partial-interpretation"]
 	path = partial-interpretation
