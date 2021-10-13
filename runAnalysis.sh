@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LLVM_VERSION=10
+
 function usage()
 {
     echo "Syntax: ./runAnalysis.sh --file=path/to/bitcode.bc --args=partial inputs"
@@ -58,7 +60,7 @@ bitcodeName=`basename $F`
 sed -i "1i$bitcodeName" stringVars.txt
 
 echo "Run Constant Conversion..."
-opt-6.0 -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat \
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat \
     -globals=gbls.txt\
     -plocals=primitiveLocals.txt \
 	-clocals=customizedLocals.txt\
@@ -68,9 +70,9 @@ opt-6.0 -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat \
  	-bbfile=bbs.txt ${app}_orig.bc -verify -o ${app}_cc.bc
 
 echo "Run MultiStage Simplifications..."
-opt-6.0 -constprop ${app}_cc.bc -o ${app}_cp.bc
-opt-6.0 -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
-opt-6.0 -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat -cleanUp \
+opt-${LLVM_VERSION} -constprop ${app}_cc.bc -o ${app}_cp.bc
+opt-${LLVM_VERSION} -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat -cleanUp \
     ${app}_ps.bc -verify -o ${app}_cu.bc
 
 
@@ -79,11 +81,11 @@ echo "Generate binay files..."
 tcpdumpFlg=0
 if [[ $app == *"tcpdump"* ]]
 then
-    clang-6.0 ${app}_orig.bc -libverbs -o ${app}_orig
-    clang-6.0 ${app}_cc.bc -libverbs -o ${app}_cc
-    clang-6.0 ${app}_cp.bc -libverbs -o ${app}_cp
-    clang-6.0 ${app}_ps.bc -libverbs -o ${app}_ps
-    clang-6.0 ${app}_cu.bc -libverbs -o ${app}_cu
+    clang-${LLVM_VERSION} ${app}_orig.bc -libverbs -o ${app}_orig
+    clang-${LLVM_VERSION} ${app}_cc.bc -libverbs -o ${app}_cc
+    clang-${LLVM_VERSION} ${app}_cp.bc -libverbs -o ${app}_cp
+    clang-${LLVM_VERSION} ${app}_ps.bc -libverbs -o ${app}_ps
+    clang-${LLVM_VERSION} ${app}_cu.bc -libverbs -o ${app}_cu
     tcpdumpFlg=1
 fi
 
@@ -92,21 +94,21 @@ fi
 objdumpFlg=0
 if [[ $app == *"objdump"* || $app == *"readelf"* ]]
 then
-    clang-6.0 ${app}_orig.bc -ldl -o ${app}_orig
-    clang-6.0 ${app}_cc.bc -ldl -o ${app}_cc
-    clang-6.0 ${app}_cp.bc -ldl -o ${app}_cp
-    clang-6.0 ${app}_ps.bc -ldl -o ${app}_ps
-    clang-6.0 ${app}_cu.bc -ldl -o ${app}_cu
+    clang-${LLVM_VERSION} ${app}_orig.bc -ldl -o ${app}_orig
+    clang-${LLVM_VERSION} ${app}_cc.bc -ldl -o ${app}_cc
+    clang-${LLVM_VERSION} ${app}_cp.bc -ldl -o ${app}_cp
+    clang-${LLVM_VERSION} ${app}_ps.bc -ldl -o ${app}_ps
+    clang-${LLVM_VERSION} ${app}_cu.bc -ldl -o ${app}_cu
     objdumpFlg=1
 fi
 
 if [[ $tcpdumpFlg == 0 && $objdumpFlg == 0 ]]
 then
-   llc-6.0 -filetype obj ${app}_orig.bc
-   llc-6.0 -filetype obj ${app}_cc.bc
-   llc-6.0 -filetype obj ${app}_cp.bc
-   llc-6.0 -filetype obj ${app}_ps.bc
-   llc-6.0 -filetype obj ${app}_cu.bc
+   llc-${LLVM_VERSION} -filetype obj ${app}_orig.bc
+   llc-${LLVM_VERSION} -filetype obj ${app}_cc.bc
+   llc-${LLVM_VERSION} -filetype obj ${app}_cp.bc
+   llc-${LLVM_VERSION} -filetype obj ${app}_ps.bc
+   llc-${LLVM_VERSION} -filetype obj ${app}_cu.bc
 fi
 
 
@@ -153,22 +155,20 @@ echo size_cu=${size_cu}
 
 
 echo "Collect Statistical info..."
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_orig} -o /dev/null ${app}_orig.bc
 
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cc} -o /dev/null ${app}_cc.bc
 
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cp} -o /dev/null ${app}_cp.bc
 
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_ps} -o /dev/null ${app}_ps.bc
 
-opt-6.0 -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cu} -o /dev/null ${app}_cu.bc
 
 #rm *.txt
 #rm *.o 
-
-echo klee --libc=uclibc --posix-runtime --dump-file gbls.txt $appFullPath $args
