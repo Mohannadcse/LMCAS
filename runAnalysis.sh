@@ -67,7 +67,7 @@ opt-${LLVM_VERSION} -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat 
     -ptrStructlocals=ptrToStructLocals.txt \
     -ptrToPrimLocals=ptrToPrimitiveLocals.txt \
     -stringVars=stringVars.txt  \
- 	-bbfile=bbs.txt ${app}_orig.bc -verify -o ${app}_cc.bc
+ 	-bbfile=bbs.txt -appName=${app} ${app}_orig.bc -verify -o ${app}_cc.bc
 
 echo "Run MultiStage Simplifications..."
 opt-${LLVM_VERSION} -constprop ${app}_cc.bc -o ${app}_cp.bc
