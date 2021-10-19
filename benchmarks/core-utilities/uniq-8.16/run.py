@@ -1,3 +1,4 @@
+
 import os, sys
 
 sys.path.append(os.path.join(os.path.dirname(
@@ -18,18 +19,19 @@ def main():
     if len(sys.argv) != 2 and len(sys.argv) != 3:
         usage()
 
-    ORIG_BIN = BIN_PATH + '/date_orig'
-    DEBLOATED_BIN = BIN_PATH + '/date_cu'
+    ORIG_BIN = BIN_PATH + '/uniq_orig'
+    DEBLOATED_BIN = BIN_PATH + '/uniq_cu'
+    TESTFILE = BIN_PATH + '/test.txt'
 
     if sys.argv[1] == 'original':
-        originaled = benchmark.original(ORIG_BIN, ['-R'])
+        originaled = benchmark.original(ORIG_BIN, ['-d ' + TESTFILE])
 
     elif sys.argv[1] == 'debloated':
-        debloateded = benchmark.debloated(DEBLOATED_BIN, [''])
+        debloateded = benchmark.debloated(DEBLOATED_BIN, [TESTFILE])
 
     elif sys.argv[1] == 'verify':
-        originaled = benchmark.original(ORIG_BIN, ['-R'])
-        debloateded = benchmark.debloated(DEBLOATED_BIN, [''])
+        originaled = benchmark.original(ORIG_BIN, ['-d ' + TESTFILE])
+        debloateded = benchmark.debloated(DEBLOATED_BIN, [TESTFILE])
 
         ret = benchmark.verify(originaled, debloateded)
 

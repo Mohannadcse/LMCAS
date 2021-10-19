@@ -1,11 +1,11 @@
 Under each benchmark directory:
-1. Run training cases:
-	- `python run.py train`
+1. Run cases on original binary:
+	- `python run.py original`
 
-2. Run the testing cases:
-	- `python run.py test`
+2. Run cases on debloated binary:
+	- `python run.py debloated`
 
-3. Verify if the train and test cases match:
+3. Verify if the both the cases match:
 	- `python run.py verify`
 
 
