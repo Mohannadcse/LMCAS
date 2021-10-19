@@ -1,39 +1,34 @@
 
 from __future__ import print_function
+import benchmark
 import os
 import subprocess
 import sys
-# sys.path.append('../')
-import benchmark
 
-def train_run(arg):
+sys.path.append(os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), os.pardir))
+
+sys.path.append(os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), os.pardir + "/binaries"))
+
+BIN_PATH = sys.path[-1]
+# print(sys.path, BIN_PATH)
+
+
+def original_run(arg):
     BIN = './date.orig'
     cmd = BIN + ' ' + arg
     return execute(cmd)
 
 
-def test_run():
+def debloated_run():
     BIN = './date.debloated'
     cmd = BIN
     return execute(cmd)
 
 
-def clean():
-    for fname in os.listdir('./'):
-        if fname == "run.py":
-            continue
-
-        if fname == 'test' or fname == 'train' or fname == "backup":
-            continue
-
-        if fname == "date.orig" or fname == "date-8.21.c.orig.c":
-            continue
-
-        execute('rm -rf ./' + fname)
-
-
 def usage():
-    print('python run.py clean|train|test|debloat|extend_debloat|get_test_traces\n')
+    print('python run.py clean|original|debloated|debloat|extend_debloat|get_debloated_traces\n')
     sys.exit(1)
 
 
@@ -41,32 +36,20 @@ def main():
     if len(sys.argv) != 2 and len(sys.argv) != 3:
         usage()
 
-    ORIG_BIN = './date.orig'
-    trained = []
-    DEBLOATED_BIN = './date.debloated'
-    tested = []
-    
-    if sys.argv[1] == 'train':
-        trained = benchmark.train(ORIG_BIN, ['-R'])
+    ORIG_BIN = BIN_PATH + '/date.orig'
+    DEBLOATED_BIN = BIN_PATH + '/date.debloated'
 
-    elif sys.argv[1] == 'test':
-        tested = benchmark.test(DEBLOATED_BIN, [''])
+    if sys.argv[1] == 'original':
+        originaled = benchmark.original(ORIG_BIN, ['-R'])
+
+    elif sys.argv[1] == 'debloated':
+        debloateded = benchmark.debloated(DEBLOATED_BIN, [''])
 
     elif sys.argv[1] == 'verify':
-        verify(trained, tested)
+        originaled = benchmark.original(ORIG_BIN, ['-R'])
+        debloateded = benchmark.debloated(DEBLOATED_BIN, [''])
 
-    # elif sys.argv[1] == 'debloat':
-    #     debloat('logs', 'date')
-
-    # elif sys.argv[1] == 'extend_debloat':
-    #     if len(sys.argv) != 3:
-    #         print("Please specify heuristic level (i.e., 1 ~ 4).")
-    #         sys.exit(1)
-    #     heuristic_level = int(sys.argv[2])
-    #     extend_debloat('date', heuristic_level)
-
-    # elif sys.argv[1] == 'clean':
-    #     clean()
+        ret = benchmark.verify(originaled, debloateded)
 
     else:
         usage()
