@@ -1,4 +1,3 @@
-
 import os, sys
 
 sys.path.append(os.path.join(os.path.dirname(
@@ -19,12 +18,11 @@ def main():
     if len(sys.argv) != 2 and len(sys.argv) != 3:
         usage()
 
-    ORIG_BIN = BIN_PATH + '/uniq_orig'
-    DEBLOATED_BIN = BIN_PATH + '/uniq_cu'
-    TESTFILE = BIN_PATH + '/uniq_test.txt'
-
-    original_test_cases = ['-d ' + TESTFILE]
-    debloated_test_cases = [TESTFILE]
+    ORIG_BIN = BIN_PATH + '/id_orig'
+    DEBLOATED_BIN = BIN_PATH + '/id_cu'
+    
+    original_test_cases = ['-G 1000']
+    debloated_test_cases = ['1000']
 
     if sys.argv[1] == 'original':
         originaled = benchmark.original(ORIG_BIN, original_test_cases)
