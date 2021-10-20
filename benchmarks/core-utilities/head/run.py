@@ -19,11 +19,11 @@ def main():
     if len(sys.argv) != 2 and len(sys.argv) != 3:
         usage()
 
-    ORIG_BIN = BIN_PATH + '/uniq_orig'
-    DEBLOATED_BIN = BIN_PATH + '/uniq_cu'
+    ORIG_BIN = BIN_PATH + '/head_orig'
+    DEBLOATED_BIN = BIN_PATH + '/head_cu'
     TESTFILE = BIN_PATH + '/test.txt'
 
-    original_test_cases = ['-d ' + TESTFILE]
+    original_test_cases = ['-n3 ' + TESTFILE]
     debloated_test_cases = [TESTFILE]
 
     if sys.argv[1] == 'original':
