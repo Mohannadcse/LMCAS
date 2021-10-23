@@ -9,6 +9,8 @@ RUN adduser docker sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
-COPY . .
+COPY install.sh .
+RUN bash ./install.sh
 
-RUN build.sh
+COPY . .
+RUN bash ./build.sh

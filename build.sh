@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -ex
 
 LLVM_VERSION=10
@@ -12,32 +11,10 @@ export LLVM_AR_NAME=llvm-ar-$LLVM_VERSION
 export LLVM_COMPILER=clang-$LLVM_VERSION
 export FORCE_UNSAFE_CONFIGURE=1
 
-echo "Installing dependencies."
-    sudo apt-get update
-    sudo apt-get install -y \
-        wget libprotobuf-dev python-protobuf protobuf-compiler  \
-        python3-pip  \
-        libz3-dev  \
-        llvm-$LLVM_VERSION-dev  \
-        clang-$LLVM_VERSION  \
-        git  \
-        cmake  \
-        zlib1g-dev  \
-        build-essential \
-        gperf  libgoogle-perftools-dev  \
-        libboost-dev  \
-        flex  \
-        bison  \
-        nano  \
-        iputils-ping \
-        libibverbs-dev
-
-echo "Installing WLLVM"  \
-    pip3 install -U lit tabulate wllvm
-
 ROOTDIR=$(pwd)
+sudo chmod u=rwx $ROOTDIR
 
-# # collect all binaries here
+# collect all binaries here
 mkdir -p $ROOTDIR/bin
 
 echo "Installing klee-uclibc"
