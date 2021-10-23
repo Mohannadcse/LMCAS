@@ -12,5 +12,6 @@ USER docker
 COPY install.sh .
 RUN bash ./install.sh
 
+USER root
 COPY . .
 RUN bash ./build.sh

@@ -12,7 +12,6 @@ export LLVM_COMPILER=clang-$LLVM_VERSION
 export FORCE_UNSAFE_CONFIGURE=1
 
 ROOTDIR=$(pwd)
-sudo chmod u=rwx $ROOTDIR
 
 # collect all binaries here
 mkdir -p $ROOTDIR/bin
