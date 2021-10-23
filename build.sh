@@ -1,14 +1,16 @@
 #!/bin/bash
 set -ex
 
-LLVM_VERSION=10
-export CC=clang-$LLVM_VERSION
-export CXX=clang++-$LLVM_VERSION
-export LLVM_CC_NAME=clang-$LLVM_VERSION
-export LLVM_CXX_NAME=clang++-$LLVM_VERSION
-export LLVM_LINK_NAME=llvm-link-$LLVM_VERSION
-export LLVM_AR_NAME=llvm-ar-$LLVM_VERSION
-export LLVM_COMPILER=clang-$LLVM_VERSION
+export LLVM_VERSION=10
+export CC=/usr/bin/clang-$LLVM_VERSION
+export CXX=/usr/bin/clang++-$LLVM_VERSION
+export LLVM_CONFIG_BINARY=/usr/bin/llvm-config-$LLVM_VERSION
+export LLVM_LINK_NAME=/usr/bin/llvm-link-$LLVM_VERSION
+export LLVM_AR_NAME=/usr/bin/llvm-ar-$LLVM_VERSION
+export LLVM_COMPILER=/usr/bin/clang-$LLVM_VERSION
+# export LLVM_CC_NAME=/usr/bin/clang-$LLVM_VERSION
+# export LLVM_CXX_NAME=/usr/bin/clang++-$LLVM_VERSION
+
 export FORCE_UNSAFE_CONFIGURE=1
 
 ROOTDIR=$(pwd)
@@ -34,6 +36,9 @@ echo "Building KLEE"
         -DENABLE_UNIT_TESTS=OFF \
         -DENABLE_SYSTEM_TESTS=OFF \
         -DENABLE_KLEE_UCLIBC=ON   \
+        -DLLVM_CONFIG_BINARY=$LLVM_CONFIG_BINARY \
+        -DLLVMCC=$CC \
+        -DLLVMCXX=$CXX \
         -DKLEE_UCLIBC_PATH=$ROOTDIR/klee-uclibc
     make -j $(nproc)
     make install
