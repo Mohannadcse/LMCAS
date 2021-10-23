@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ex
+
 LLVM_VERSION=10
 export CC=clang-$LLVM_VERSION
 export CXX=clang++-$LLVM_VERSION
@@ -36,7 +38,7 @@ echo "Installing WLLVM"  \
 ROOTDIR=$(pwd)
 
 # collect all binaries here
-mkdir $ROOTDIR/bin
+mkdir -p $ROOTDIR/bin
 
 echo "Installing klee-uclibc" && \
     git clone https://github.com/klee/klee-uclibc.git && \
