@@ -1,6 +1,4 @@
-
-# Pull base image.
-sudo -e
+#!/bin/sh
 
 LLVM_VERSION=10
 
