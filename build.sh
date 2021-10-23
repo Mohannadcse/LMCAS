@@ -1,16 +1,8 @@
 
 # Pull base image.
-sudo -ex
+sudo -e
 
 LLVM_VERSION=10
-export CC=clang-$LLVM_VERSION
-export CXX=clang++-$LLVM_VERSION
-export LLVM_CC_NAME clang-$LLVM_VERSION
-export LLVM_CXX_NAME clang++-$LLVM_VERSION
-export LLVM_LINK_NAME llvm-link-$LLVM_VERSION
-export LLVM_AR_NAME llvm-ar-$LLVM_VERSION
-export LLVM_COMPILER clang-$LLVM_VERSION
-export FORCE_UNSAFE_CONFIGURE=1
 
 # Install deps.
 echo "Build type set to: Release" && \
@@ -33,6 +25,15 @@ echo "Build type set to: Release" && \
     sudo apt-get install nano && \
     sudo apt-get install iputils-ping && \
     sudo apt-get install -y libibverbs-dev
+
+export CC=clang-$LLVM_VERSION
+export CXX=clang++-$LLVM_VERSION
+export LLVM_CC_NAME clang-$LLVM_VERSION
+export LLVM_CXX_NAME clang++-$LLVM_VERSION
+export LLVM_LINK_NAME llvm-link-$LLVM_VERSION
+export LLVM_AR_NAME llvm-ar-$LLVM_VERSION
+export LLVM_COMPILER clang-$LLVM_VERSION
+export FORCE_UNSAFE_CONFIGURE=1
 
 echo "Install WLLVM" && \
     pip3 install -U lit tabulate wllvm
