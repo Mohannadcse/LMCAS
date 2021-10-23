@@ -3,11 +3,11 @@
 LLVM_VERSION=10
 export CC=clang-$LLVM_VERSION
 export CXX=clang++-$LLVM_VERSION
-export LLVM_CC_NAME clang-$LLVM_VERSION
-export LLVM_CXX_NAME clang++-$LLVM_VERSION
-export LLVM_LINK_NAME llvm-link-$LLVM_VERSION
-export LLVM_AR_NAME llvm-ar-$LLVM_VERSION
-export LLVM_COMPILER clang-$LLVM_VERSION
+export LLVM_CC_NAME=clang-$LLVM_VERSION
+export LLVM_CXX_NAME=clang++-$LLVM_VERSION
+export LLVM_LINK_NAME=llvm-link-$LLVM_VERSION
+export LLVM_AR_NAME=llvm-ar-$LLVM_VERSION
+export LLVM_COMPILER=clang-$LLVM_VERSION
 export FORCE_UNSAFE_CONFIGURE=1
 
 echo "Installing dependencies." && \
