@@ -21,8 +21,8 @@ RUN echo "Build type set to: Release" && \
     apt-get install -yqq libboost-dev && \
     apt-get install -y flex && \
     apt-get install -y bison && \
-    apt-get install nano && \
-    apt-get install iputils-ping && \
+    apt-get install -y nano && \
+    apt-get install -y iputils-ping && \
     apt-get install -y libibverbs-dev
 
 
