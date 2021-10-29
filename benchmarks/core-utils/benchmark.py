@@ -3,10 +3,10 @@ from subprocess import PIPE, Popen
 
 
 def execute(cmd):
-    print('running ', cmd)
+    print('Running:\t', cmd)
     with Popen(cmd, stdout=PIPE, stderr=None, shell=True) as process:
         output = process.communicate()[0].decode("utf-8")
-
+    print('Output:\t', output)
     return output
 
 
