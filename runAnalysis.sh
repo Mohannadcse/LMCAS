@@ -46,7 +46,7 @@ appFullPath=$(realpath $F)
 
 echo "AppName: $app"
 mkdir debloate_${app}
-cd debloate_${app}
+pushd debloate_${app}
 
 cp $appFullPath ${app}_orig.bc
 
@@ -172,3 +172,14 @@ opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
 
 #rm *.txt
 #rm *.o 
+popd
+
+# verify tests on coreutils
+cp 'debloate_${app}/${app}_orig' 'benchmarks/core-utils/binaries'
+cp 'debloate_${app}/${app}_cu' 'benchmarks/core-utils/binaries'
+
+pushd 'benchmarks/core-utils/${app}'
+
+python3 run.py verify
+
+popd
