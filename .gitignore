@@ -136,3 +136,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+bin/
+Dataset-1/coreutils-8.32/
+artifacts_bitcode/
+artifacts_bitcode/
+debloate*
+include/
