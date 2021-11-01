@@ -49,6 +49,6 @@ echo "Building LLVM simplification passes"
     pushd LLVM_Passes
     mkdir -p build
     cd build
-    cmake ..
+    cmake -DLLVM_DIR=/usr/lib/llvm-10/lib/cmake/llvm ..
     make -j $(nproc)
     popd
