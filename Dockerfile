@@ -13,5 +13,6 @@ COPY install.sh .
 RUN bash ./install.sh
 
 USER root
+WORKDIR /Datasets
 COPY . .
-RUN bash ./build.sh
+RUN bash /Datasets/build.sh

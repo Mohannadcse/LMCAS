@@ -21,7 +21,9 @@ echo "Installing dependencies."
         bison  \
         nano  \
         iputils-ping \
-        libibverbs-dev
+        libibverbs-dev \
+        libncursesw5  \
+        libncursesw5-dev
 
 echo "Installing WLLVM"  \
     pip3 install -U lit tabulate wllvm
