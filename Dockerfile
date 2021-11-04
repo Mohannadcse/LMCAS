@@ -13,6 +13,9 @@ COPY install.sh .
 RUN bash ./install.sh
 
 USER root
+RUN echo "Installing WLLVM"  \
+    pip3 install -U lit tabulate wllvm
+
 WORKDIR /Datasets
 COPY . .
 RUN bash /Datasets/build.sh

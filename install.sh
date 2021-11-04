@@ -24,6 +24,3 @@ echo "Installing dependencies."
         libibverbs-dev \
         libncursesw5  \
         libncursesw5-dev
-
-echo "Installing WLLVM"  \
-    pip3 install -U lit tabulate wllvm
