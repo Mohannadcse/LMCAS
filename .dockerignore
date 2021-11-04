@@ -1,0 +1,16 @@
+Dockerfile
+**/build
+
+bin/
+include/
+lib/
+
+.git/
+.gitignore
+.gitmodules
+
+README.md
+
+Dataset-1/coreutils-8.32
+klee-uclibc
+benchmark/core-utils/binaries

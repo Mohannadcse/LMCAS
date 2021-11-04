@@ -1,6 +1,10 @@
 #!/bin/bash
 
 LLVM_VERSION=10
+ROOTDIR=$(pwd)
+
+# collect all binaries here
+export BIN=$ROOTDIR/bin
 
 function usage()
 {
@@ -45,22 +49,22 @@ app=$(basename $F .bc)
 appFullPath=$(realpath $F)
 
 echo "AppName: $app"
-mkdir debloate_${app}
-cd debloate_${app}
+mkdir -p debloate_${app}
+pushd debloate_${app}
 
 cp $appFullPath ${app}_orig.bc
 
 echo "Run KLEE..."
 
-klee --libc=uclibc --posix-runtime --dump-file gbls.txt $appFullPath $args
-klee --libc=uclibc --posix-runtime --dump-file bbs.txt --dump-bbs $appFullPath $args
+$BIN/klee --libc=uclibc --posix-runtime --dump-file gbls.txt $appFullPath $args
+$BIN/klee --libc=uclibc --posix-runtime --dump-file bbs.txt --dump-bbs $appFullPath $args
 
 #I add the file name to the stringVars to exclude the lines that contain the file name
 bitcodeName=`basename $F`
 sed -i "1i$bitcodeName" stringVars.txt
 
 echo "Run Constant Conversion..."
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat \
     -globals=gbls.txt\
     -plocals=primitiveLocals.txt \
 	-clocals=customizedLocals.txt\
@@ -72,7 +76,7 @@ opt-${LLVM_VERSION} -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat 
 echo "Run MultiStage Simplifications..."
 opt-${LLVM_VERSION} -constprop ${app}_cc.bc -o ${app}_cp.bc
 opt-${LLVM_VERSION} -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Debloat/libLLVMDebloat.so -debloat -cleanUp \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat -cleanUp \
     ${app}_ps.bc -verify -o ${app}_cu.bc
 
 
@@ -155,20 +159,31 @@ echo size_cu=${size_cu}
 
 
 echo "Collect Statistical info..."
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_orig} -o /dev/null ${app}_orig.bc
 
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cc} -o /dev/null ${app}_cc.bc
 
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cp} -o /dev/null ${app}_cp.bc
 
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_ps} -o /dev/null ${app}_ps.bc
 
-opt-${LLVM_VERSION} -load /build/LLVM_Passes/Profiler/libLLVMPprofiler.so \
+opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cu} -o /dev/null ${app}_cu.bc
 
 #rm *.txt
 #rm *.o 
+popd
+
+# verify tests on coreutils
+cp debloate_${app}/${app}_orig benchmarks/core-utils/binaries
+cp debloate_${app}/${app}_cu benchmarks/core-utils/binaries
+
+pushd benchmarks/core-utils/${app}
+
+python3 run.py verify
+
+popd

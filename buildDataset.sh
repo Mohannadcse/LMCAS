@@ -1,27 +1,30 @@
 #!/bin/bash
 
+ROOTDIR=$(pwd)
+
 mkdir bitcode_files
 
 echo "Preparing Dataset-1"
-wget https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.gz 
-mkdir Dataset-1 
+wget https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.gz
 tar -xf coreutils-8.32.tar.gz -C Dataset-1
 rm coreutils-8.32.tar.gz
-find Dataset-1_src -name \*.c -exec cp {} Dataset-1/coreutils-8.32/src \; 
+
+find Dataset-1 -name \*.c -exec cp {} Dataset-1/coreutils-8.32/src \; 
 cd Dataset-1/coreutils-8.32/
 mkdir obj-llvm
 cd obj-llvm
 CC=wllvm ../configure \
       --disable-nls \
       CFLAGS="-g -O0 -Xclang  -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
-make
+make -j $(nproc)
 cd src
 find . -executable -type f | xargs -I '{}' extract-bc '{}'
 
+cd $ROOTDIR
 
 echo "Preparing Dataset-2"
 
-cd /Datasets
+
 mkdir Dataset-3 && cd Dataset-3
 echo "Preparing Dataset-3"
 #libcap
@@ -29,13 +32,13 @@ git clone https://github.com/the-tcpdump-group/libpcap.git libpcap
 cd libpcap
 CC=wllvm ./configure --disable-largefile --disable-shared --without-gcc --without-libnl --disable-dbus --without-dag --without-snf CFLAGS="-g -O0"
 sed -i "s/-fpic//" Makefile
-CC=wllvm make -j4
+CC=wllvm make -j $(nproc)
 cd ..
 
 #tcpdump
 git clone https://github.com/the-tcpdump-group/tcpdump.git tcpdump
 cd tcpdump
-cp /Datasets/Dataset-3_src/tcpdump.c .
+cp $ROOTDIR/Dataset-3/tcpdump.c .
 ln -s ../libpcap libpcap
 sed -i "s/HASHNAMESIZE 4096/HASHNAMESIZE 8/" addrtoname.c
 sed -i "s/HASHNAMESIZE 4096/HASHNAMESIZE 8/" print-atalk.c
@@ -47,7 +50,7 @@ cd ..
 #Binutils
 git clone https://sourceware.org/git/binutils-gdb.git binutils
 cd binutils
-cp /Datasets/Dataset-3_src/objdump.c /Datasets/Dataset-3_src/readelf.c binutils
+cp cd $ROOTDIR/Dataset-3/objdump.c cd $ROOTDIR/Dataset-3/readelf.c binutils
 git checkout -f 427234c78bddbea7c94fa1a35e74b7dfeabeeb43
 find . -name configure -exec sed -i "s/ -Werror//" '{}' \;
 find . -name "Makefile*" -exec sed -i '/^SUBDIRS/s/ doc po//' '{}' \;
@@ -60,11 +63,12 @@ find binutils -executable -type f -exec file '{}' \; | grep ELF | cut -d: -f1 | 
 find binutils -name "*.bc" -not -name "*.o.bc" -not -name ".conf*" -not -name "bfdtest*" -exec cp '{}' "bc/" \;
 cd ..
 
-for f in `cat /Datasets/Dataset-1_src/Dataset-1-list.txt`
+cd $ROOTDIR
+
+for f in `cat Dataset-1/Dataset-1-list.txt`
 do
-	cp /Datasets/Dataset-1/coreutils-8.32/obj-llvm/src/"$f".bc bitcode_files/
+	cp Dataset-1/coreutils-8.32/obj-llvm/src/"$f".bc bitcode_files/
 done
 
-cp /Datasets/Dataset-3/tcpdump/tcpdump.bc bitcode_files/
-cp /Datasets/Dataset-3/binutils/obj-llvm/bc/readelf.bc /Datasets/Dataset-3/binutils/obj-llvm/bc/objdump.bc bitcode_files/
-
+cp Dataset-3/tcpdump/tcpdump.bc bitcode_files/
+cp Dataset-3/binutils/obj-llvm/bc/readelf.bc Dataset-3/binutils/obj-llvm/bc/objdump.bc bitcode_files/
