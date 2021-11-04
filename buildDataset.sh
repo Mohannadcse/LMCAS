@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ROOTDIR=$(pwd)
+
 mkdir bitcode_files
 
 echo "Preparing Dataset-1"
@@ -18,10 +20,12 @@ make -j $(nproc)
 cd src
 find . -executable -type f | xargs -I '{}' extract-bc '{}'
 
+cd $ROOTDIR
 
 echo "Preparing Dataset-2"
 
 
+mkdir Dataset-3 && cd Dataset-3
 echo "Preparing Dataset-3"
 #libcap
 git clone https://github.com/the-tcpdump-group/libpcap.git libpcap
@@ -34,7 +38,7 @@ cd ..
 #tcpdump
 git clone https://github.com/the-tcpdump-group/tcpdump.git tcpdump
 cd tcpdump
-cp Dataset-3/tcpdump.c .
+cp $ROOTDIR/Dataset-3/tcpdump.c .
 ln -s ../libpcap libpcap
 sed -i "s/HASHNAMESIZE 4096/HASHNAMESIZE 8/" addrtoname.c
 sed -i "s/HASHNAMESIZE 4096/HASHNAMESIZE 8/" print-atalk.c
@@ -46,7 +50,7 @@ cd ..
 #Binutils
 git clone https://sourceware.org/git/binutils-gdb.git binutils
 cd binutils
-cp Dataset-3/objdump.c Dataset-3/readelf.c binutils
+cp cd $ROOTDIR/Dataset-3/objdump.c cd $ROOTDIR/Dataset-3/readelf.c binutils
 git checkout -f 427234c78bddbea7c94fa1a35e74b7dfeabeeb43
 find . -name configure -exec sed -i "s/ -Werror//" '{}' \;
 find . -name "Makefile*" -exec sed -i '/^SUBDIRS/s/ doc po//' '{}' \;
@@ -58,6 +62,8 @@ CC=wllvm make -j4
 find binutils -executable -type f -exec file '{}' \; | grep ELF | cut -d: -f1 | xargs -n 1 extract-bc
 find binutils -name "*.bc" -not -name "*.o.bc" -not -name ".conf*" -not -name "bfdtest*" -exec cp '{}' "bc/" \;
 cd ..
+
+cd $ROOTDIR
 
 for f in `cat Dataset-1/Dataset-1-list.txt`
 do
