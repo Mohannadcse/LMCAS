@@ -1,10 +1,25 @@
 # Building LMCAS Docker Machine #
-After Unzipping the compressed file, execute the following commands to build and run LMCAS. The build process takes sometime because it involves downloading and building both of LLVM and KLEE.
+
+1. Clone the repository (or unzip the compressed file)
+   `git clone https://github.com/Mohannadcse/LMCAS_Docker`
+2. execute the following commands to build and run LMCAS. The build process takes sometime because it involves downloading and building both of LLVM and KLEE.
+
+For Docker
 ```shell
 docker build -t lmcas .
 docker run -it lmcas
 ```
 
+For a native Linux build,
+
+```
+./install.sh
+./build.sh
+
+# build Dataset and run LMCAS
+./buildDataset.sh
+./runAnalysis.sh --file:artifacts_bitcode/Dataset-1/wc.bc --args:-l
+```
 
 # Running LMCAS #
 We provide the source code of the apps used in the evaluation `after adding the neck`. But you need to compile these programs using `wllvm`. To avoid compilation, we also provided the bitcode of these apps. So actually you don't need to do the whole program. The bitcode of the apps can be found under the directory `artifacts_bitcode`.
@@ -14,7 +29,7 @@ We provide the source code of the apps used in the evaluation `after adding the 
 
 For replicating our evaluation, you can run the analysis according to the settings mentioned in this [TABLE](https://sites.google.com/view/lmcas/home#h.r7u6w8uktrgc)
 
-NOTE: our debloating strategy strategy relies on the fact that we can split the app into configuration part and main logic part. Therefore, the specialized programs are generated w.r.t the required functionality. For example, you want `wc` to only count number of lines i.e., `wc -l`. So you don't need to provide the file name to our script `runAnalysis.sh`, which makes the command as follows `./runAnalysis.sh --file=./bitcode_files/wc.bc --args=-l`.
+NOTE: our debloating strategy strategy relies on the fact that we can split the app into configuration part and main logic part. Therefore, the specialized programs are generated w.r.t the required functionality. For example, you want `wc` to only count number of lines i.e., `wc -l`. So you don't need to provide the file name to our script `runAnalysis.sh`, which makes the command as follows `./runAnalysis.sh --file:artifacts_bitcode/Dataset-1/wc.bc --args:-l` or `./runAnalysis.sh --file:artifacts_bitcode/Dataset-3/tcpdump.bc --args:"-i lo"`.
 
 # Interpreting the Results#
 After running `LMCAS`, a directory will be created `debloate_<AppName>`. This directory contains a set of files that are generated while debloating the app. 
