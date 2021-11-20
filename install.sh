@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-LLVM_VERSION=10
+LLVM_VERSION=12
 
 echo "Installing dependencies."
     sudo apt-get update
@@ -9,8 +9,6 @@ echo "Installing dependencies."
         wget libprotobuf-dev python-protobuf protobuf-compiler  \
         python3-pip  \
         libz3-dev  \
-        llvm-$LLVM_VERSION-dev  \
-        clang-$LLVM_VERSION  \
         git  \
         cmake  \
         zlib1g-dev  \
@@ -23,4 +21,10 @@ echo "Installing dependencies."
         iputils-ping \
         libibverbs-dev \
         libncursesw5  \
-        libncursesw5-dev
+        libncursesw5-dev \
+        lsb-release wget software-properties-common
+echo "Downloading LLVM"    
+    wget https://apt.llvm.org/llvm.sh -O /tmp/llvm.sh
+    chmod +x /tmp/llvm.sh
+    sudo /tmp/llvm.sh ${LLVM_VERSION}
+

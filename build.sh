@@ -1,15 +1,14 @@
 #!/bin/bash
 set -ex
 
-export LLVM_VERSION=10
+export LLVM_VERSION=12
 export CC=/usr/bin/clang-$LLVM_VERSION
 export CXX=/usr/bin/clang++-$LLVM_VERSION
 export LLVM_CONFIG_BINARY=/usr/bin/llvm-config-$LLVM_VERSION
 export LLVM_LINK_NAME=/usr/bin/llvm-link-$LLVM_VERSION
 export LLVM_AR_NAME=/usr/bin/llvm-ar-$LLVM_VERSION
-export LLVM_COMPILER=/usr/bin/clang-$LLVM_VERSION
-# export LLVM_CC_NAME=/usr/bin/clang-$LLVM_VERSION
-# export LLVM_CXX_NAME=/usr/bin/clang++-$LLVM_VERSION
+export LLVM_COMPILER=/usr/bin/clang-$LLVM_VERSION 
+
 
 export FORCE_UNSAFE_CONFIGURE=1
 

@@ -1,6 +1,10 @@
 #!/bin/bash
 
-LLVM_VERSION=10
+LLVM_VERSION=12
+
+#i noticed this is required while debloating tcpdump
+export LLVM_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer-$LLVM_VERSION
+
 ROOTDIR=$(pwd)
 
 # collect all binaries here
@@ -74,7 +78,7 @@ opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -
  	-bbfile=bbs.txt -appName=${app} ${app}_orig.bc -verify -o ${app}_cc.bc
 
 echo "Run MultiStage Simplifications..."
-opt-${LLVM_VERSION} -constprop ${app}_cc.bc -o ${app}_cp.bc
+opt-${LLVM_VERSION} -sccp -instsimplify ${app}_cc.bc -o ${app}_cp.bc
 opt-${LLVM_VERSION} -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
 opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat -cleanUp \
     ${app}_ps.bc -verify -o ${app}_cu.bc
