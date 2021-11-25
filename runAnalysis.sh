@@ -3,7 +3,7 @@
 LLVM_VERSION=12
 
 #i noticed this is required while debloating tcpdump
-export LLVM_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer-$LLVM_VERSION
+#export LLVM_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer-$LLVM_VERSION
 
 ROOTDIR=$(pwd)
 
@@ -68,7 +68,7 @@ bitcodeName=`basename $F`
 sed -i "1i$bitcodeName" stringVars.txt
 
 echo "Run Constant Conversion..."
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat \
+opt -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat \
     -globals=gbls.txt\
     -plocals=primitiveLocals.txt \
 	-clocals=customizedLocals.txt\
@@ -78,9 +78,9 @@ opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -
  	-bbfile=bbs.txt -appName=${app} ${app}_orig.bc -verify -o ${app}_cc.bc
 
 echo "Run MultiStage Simplifications..."
-opt-${LLVM_VERSION} -sccp -instsimplify ${app}_cc.bc -o ${app}_cp.bc
-opt-${LLVM_VERSION} -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat -cleanUp \
+opt -sccp -instsimplify ${app}_cc.bc -o ${app}_cp.bc
+opt -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
+opt -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat -cleanUp \
     ${app}_ps.bc -verify -o ${app}_cu.bc
 
 
@@ -89,11 +89,11 @@ echo "Generate binay files..."
 tcpdumpFlg=0
 if [[ $app == *"tcpdump"* ]]
 then
-    clang-${LLVM_VERSION} ${app}_orig.bc -libverbs -o ${app}_orig
-    clang-${LLVM_VERSION} ${app}_cc.bc -libverbs -o ${app}_cc
-    clang-${LLVM_VERSION} ${app}_cp.bc -libverbs -o ${app}_cp
-    clang-${LLVM_VERSION} ${app}_ps.bc -libverbs -o ${app}_ps
-    clang-${LLVM_VERSION} ${app}_cu.bc -libverbs -o ${app}_cu
+    clang ${app}_orig.bc -libverbs -o ${app}_orig
+    clang ${app}_cc.bc -libverbs -o ${app}_cc
+    clang ${app}_cp.bc -libverbs -o ${app}_cp
+    clang ${app}_ps.bc -libverbs -o ${app}_ps
+    clang ${app}_cu.bc -libverbs -o ${app}_cu
     tcpdumpFlg=1
 fi
 
@@ -102,21 +102,21 @@ fi
 objdumpFlg=0
 if [[ $app == *"objdump"* || $app == *"readelf"* ]]
 then
-    clang-${LLVM_VERSION} ${app}_orig.bc -ldl -o ${app}_orig
-    clang-${LLVM_VERSION} ${app}_cc.bc -ldl -o ${app}_cc
-    clang-${LLVM_VERSION} ${app}_cp.bc -ldl -o ${app}_cp
-    clang-${LLVM_VERSION} ${app}_ps.bc -ldl -o ${app}_ps
-    clang-${LLVM_VERSION} ${app}_cu.bc -ldl -o ${app}_cu
+    clang ${app}_orig.bc -ldl -o ${app}_orig
+    clang ${app}_cc.bc -ldl -o ${app}_cc
+    clang ${app}_cp.bc -ldl -o ${app}_cp
+    clang ${app}_ps.bc -ldl -o ${app}_ps
+    clang ${app}_cu.bc -ldl -o ${app}_cu
     objdumpFlg=1
 fi
 
 if [[ $tcpdumpFlg == 0 && $objdumpFlg == 0 ]]
 then
-   llc-${LLVM_VERSION} -filetype obj ${app}_orig.bc
-   llc-${LLVM_VERSION} -filetype obj ${app}_cc.bc
-   llc-${LLVM_VERSION} -filetype obj ${app}_cp.bc
-   llc-${LLVM_VERSION} -filetype obj ${app}_ps.bc
-   llc-${LLVM_VERSION} -filetype obj ${app}_cu.bc
+   llc -filetype obj ${app}_orig.bc
+   llc -filetype obj ${app}_cc.bc
+   llc -filetype obj ${app}_cp.bc
+   llc -filetype obj ${app}_ps.bc
+   llc -filetype obj ${app}_cu.bc
 fi
 
 
@@ -163,19 +163,19 @@ echo size_cu=${size_cu}
 
 
 echo "Collect Statistical info..."
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
+opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_orig} -o /dev/null ${app}_orig.bc
 
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
+opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cc} -o /dev/null ${app}_cc.bc
 
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
+opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cp} -o /dev/null ${app}_cp.bc
 
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
+opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_ps} -o /dev/null ${app}_ps.bc
 
-opt-${LLVM_VERSION} -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
+opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_cu} -o /dev/null ${app}_cu.bc
 
 #rm *.txt

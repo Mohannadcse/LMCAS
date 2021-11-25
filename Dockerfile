@@ -9,6 +9,7 @@ RUN adduser docker sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
+USER root
 COPY install.sh .
 RUN bash ./install.sh
 
@@ -18,4 +19,6 @@ RUN echo "Installing WLLVM"  \
 
 WORKDIR /Datasets
 COPY . .
-RUN bash /Datasets/build.sh
+RUN bash /Datasets/buildLLVM.sh
+
+RUN bash /Datasets/buildLMCAS.sh

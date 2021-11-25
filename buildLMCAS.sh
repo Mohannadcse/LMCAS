@@ -2,15 +2,12 @@
 set -ex
 
 export LLVM_VERSION=12
-export CC=/usr/bin/clang-$LLVM_VERSION
-export CXX=/usr/bin/clang++-$LLVM_VERSION
-export LLVM_CONFIG_BINARY=/usr/bin/llvm-config-$LLVM_VERSION
-export LLVM_LINK_NAME=/usr/bin/llvm-link-$LLVM_VERSION
-export LLVM_AR_NAME=/usr/bin/llvm-ar-$LLVM_VERSION
-export LLVM_COMPILER=/usr/bin/clang-$LLVM_VERSION 
-
-
-export FORCE_UNSAFE_CONFIGURE=1
+export CC=/usr/local/bin/clang
+export CXX=/usr/local/bin/clang++
+export LLVM_CONFIG_BINARY=/usr/local/bin/llvm-config
+export LLVM_LINK_NAME=/usr/local/bin/llvm-link
+export LLVM_AR_NAME=/usr/local/bin/llvm-ar
+export LLVM_COMPILER=/usr/local/bin/clang
 
 ROOTDIR=$(pwd)
 
@@ -20,7 +17,7 @@ mkdir -p $ROOTDIR/bin
 echo "Installing klee-uclibc"
     git clone https://github.com/klee/klee-uclibc.git || true
     pushd klee-uclibc
-    ./configure --make-llvm-lib --with-llvm-config=/usr/bin/llvm-config-$LLVM_VERSION
+    ./configure --make-llvm-lib --with-llvm-config=/usr/local/bin/llvm-config
     make -j $(nproc)
     popd
 
@@ -48,6 +45,8 @@ echo "Building LLVM simplification passes"
     pushd LLVM_Passes
     mkdir -p build
     cd build
-    cmake -DLLVM_DIR=/usr/lib/llvm-10/lib/cmake/llvm ..
+    cmake ..
     make -j $(nproc)
     popd
+
+
