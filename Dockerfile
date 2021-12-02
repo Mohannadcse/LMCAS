@@ -17,8 +17,12 @@ USER root
 RUN echo "Installing WLLVM"  \
     pip3 install -U lit tabulate wllvm
 
-WORKDIR /Datasets
-COPY . .
-RUN bash /Datasets/buildLLVM.sh
 
-RUN bash /Datasets/buildLMCAS.sh
+
+WORKDIR /LMCAS
+
+COPY build-llvm.sh .
+RUN bash /LMCAS/build-llvm.sh
+
+COPY . .
+RUN bash /LMCAS/build-lmcas.sh

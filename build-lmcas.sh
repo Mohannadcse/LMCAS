@@ -11,6 +11,11 @@ export LLVM_COMPILER=/usr/local/bin/clang
 
 ROOTDIR=$(pwd)
 
+echo "Building Neck Identification" 
+    pushd neck-identification
+    ./build.sh
+    popd
+
 # collect all binaries here
 mkdir -p $ROOTDIR/bin
 
