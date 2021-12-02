@@ -40,9 +40,11 @@ apt-get update
 apt-get install -y gcc-11 g++-11
 
 
-# echo "Downloading LLVM"    
-#     wget https://apt.llvm.org/llvm.sh -O /tmp/llvm.sh
-#     chmod +x /tmp/llvm.sh
-#     sudo /tmp/llvm.sh ${LLVM_VERSION}
+
+# Enable dot processing and LLVM CFGs
+sudo apt-get -y install graphviz
+
+# PhASAR's dependencies
+sudo apt-get install -y python3-pip sqlite3 libsqlite3-dev python3-venv libboost-all-dev
 
 
