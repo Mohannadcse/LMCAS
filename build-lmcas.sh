@@ -54,4 +54,9 @@ echo "Building LLVM simplification passes"
     make -j $(nproc)
     popd
 
+# for recognizing the `libLLVM-12.so` 
+ldconfig
+
+# for avoiding memory issue while running phasar
+ulimit -s 16777216
 
