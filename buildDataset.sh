@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export LLVM_COMPILER=clang
+export LLVM_COMPILER_PATH=/nobackup/LLVM_12.0_src/llvm-project/build/bin
+
 ROOTDIR=$(pwd)
 
 mkdir bitcode_files
@@ -61,6 +64,15 @@ sed -i 's/ -static-libstdc++ -static-libgcc//' Makefile
 CC=wllvm make -j4
 find binutils -executable -type f -exec file '{}' \; | grep ELF | cut -d: -f1 | xargs -n 1 extract-bc
 find binutils -name "*.bc" -not -name "*.o.bc" -not -name ".conf*" -not -name "bfdtest*" -exec cp '{}' "bc/" \;
+cd ..
+
+#dnsproxy
+git clone git@github.com:awaw/dnsproxy.git
+cd dnsproxy/
+bootstrap
+CC=wllvm ./configure CFLAGS="-g -O0"
+make -j4
+extract-bc dnsproxy
 cd ..
 
 cd $ROOTDIR

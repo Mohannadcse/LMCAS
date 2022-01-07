@@ -3,8 +3,6 @@ set -ex
 
 export LLVM_VERSION=12
 
-
-
 export FORCE_UNSAFE_CONFIGURE=1
 
 ROOTDIR=$(pwd)

@@ -74,12 +74,13 @@ sed -i "1i$bitcodeName" stringVars.txt
 
 echo "Run Constant Conversion..."
 opt -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat \
-    -globals=gbls.txt\
+    -gblInt=gbls.txt\
     -plocals=primitiveLocals.txt \
 	-clocals=customizedLocals.txt\
     -ptrStructlocals=ptrToStructLocals.txt \
     -ptrToPrimLocals=ptrToPrimitiveLocals.txt \
-    -stringVars=stringVars.txt  \
+    -stringVarsLcl=stringVarsLcl.txt  \
+    -stringVarsGbl=stringVarsGbls.txt \
  	-bbfile=bbs.txt -appName=${app} ${app}_orig_neck.ll -verify -o ${app}_cc.bc
 
 echo "Run MultiStage Simplifications..."
