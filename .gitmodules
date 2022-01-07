@@ -2,10 +2,9 @@
 	path = LLVM_Passes
 	url = git@github.com:Mohannadcse/LLVM_Debloating_Passes.git
  
-[submodule "partial-interpretation"]
-	path = partial-interpretation
-	url = git@github.com:Mohannadcse/Partial_interpreter.git
-
 [submodule "neck-identification"]
 	path = neck-identification
 	url = irb-git@git.cs.uni-paderborn.de:pdschbrt/neck-identification.git
+[submodule "partial-interpretation"]
+	path = partial-interpretation
+	url = git@github.com:Mohannadcse/Partial_interpreter.git
