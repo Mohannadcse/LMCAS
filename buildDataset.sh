@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export LLVM_COMPILER=clang
-export LLVM_COMPILER_PATH=/nobackup/LLVM_12.0_src/llvm-project/build/bin
+export LLVM_COMPILER_PATH=/usr/local/bin
 
 ROOTDIR=$(pwd)
 
@@ -81,6 +81,27 @@ for f in `cat Dataset-1/Dataset-1-list.txt`
 do
 	cp Dataset-1/coreutils-8.32/obj-llvm/src/"$f".bc bitcode_files/
 done
+
+# wget and curl
+echo "Preparing Dataset-5"
+mkdir -p Dataset-5
+wget https://ftp.gnu.org/gnu/wget/wget-1.17.1.tar.gz
+tar -xf wget-1.17.1.tar.gz -C Dataset-5
+rm wget-1.17.1.tar.gz
+
+cd Dataset-5/wget-1.17.1/
+mkdir -p obj-llvm
+cd obj-llvm
+CC=wllvm ../configure \
+      --disable-nls \
+      CFLAGS="-g -O0 -Xclang  -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
+make -j $(nproc)
+cd src
+find . -executable -type f | xargs -I '{}' extract-bc '{}'
+
+cd $ROOTDIR
+
+cp Dataset-5/wget-1.17.1/obj-llvm/src/*.bc bitcode_files/
 
 cp Dataset-3/tcpdump/tcpdump.bc bitcode_files/
 cp Dataset-3/binutils/obj-llvm/bc/readelf.bc Dataset-3/binutils/obj-llvm/bc/objdump.bc bitcode_files/
