@@ -19,6 +19,7 @@ echo "Building Neck Identification"
 # collect all binaries here
 mkdir -p $ROOTDIR/bin
 
+echo "Building Partial Interpretation"
 echo "Installing klee-uclibc"
     git clone https://github.com/klee/klee-uclibc.git || true
     pushd klee-uclibc
@@ -46,7 +47,7 @@ echo "Building KLEE"
     echo "Klee binary installed in ${ROOTDIR}/bin"
     popd
 
-echo "Building LLVM simplification passes"
+echo "Building LLVM Simplification Passes"
     pushd LLVM_Passes
     mkdir -p build
     cd build
