@@ -24,7 +24,7 @@ def main():
     TESTFILE = BIN_PATH + '/wgetrc'
 
     original_test_cases = ['--config ' + TESTFILE + ' google.com']
-    debloated_test_cases = [TESTFILE + ' google.com']
+    debloated_test_cases = ['google.com']
 
     if sys.argv[1] == 'original':
         originaled = benchmark.original(ORIG_BIN, original_test_cases)
