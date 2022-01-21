@@ -189,10 +189,10 @@ opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
 popd
 
 # verify tests on coreutils
-cp debloate_${app}/${app}_orig benchmarks/core-utils/binaries
-cp debloate_${app}/${app}_cu benchmarks/core-utils/binaries
+cp debloate_${app}/${app}_orig benchmarks/binaries
+cp debloate_${app}/${app}_cu benchmarks/binaries
 
-pushd benchmarks/core-utils/${app}
+pushd benchmarks/${app}
 
 python3 run.py verify
 
