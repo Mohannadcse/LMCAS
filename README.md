@@ -54,14 +54,14 @@ verification tests, please follow the guide.
 Under each directory in `benchmarks/core-utils`:
 
 NOTE: This step assumes that the original binary and the debloated binary are present in 
-`benchmarks/core-utils/binaries` with the following suffix 
+`benchmarks/binaries` with the following suffix 
 - `<coreutil>_orig`
 - `<coreutil>_cu`
 
 For eg, for `basename`,
 
 0. From the project root, 
-    - `cd benchmarks/core-utils/basename`
+    - `cd benchmarks/basename`
 
 1. Run cases on original binary:
 	- `python3 run.py original`

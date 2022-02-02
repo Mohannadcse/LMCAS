@@ -82,9 +82,14 @@ do
 	cp Dataset-1/coreutils-8.32/obj-llvm/src/"$f".bc bitcode_files/
 done
 
+cp Dataset-3/tcpdump/tcpdump.bc bitcode_files/
+cp Dataset-3/binutils/obj-llvm/bc/readelf.bc Dataset-3/binutils/obj-llvm/bc/objdump.bc bitcode_files/
+
 # wget and curl
 echo "Preparing Dataset-5"
 mkdir -p Dataset-5
+
+# wget
 wget https://ftp.gnu.org/gnu/wget/wget-1.17.1.tar.gz
 tar -xf wget-1.17.1.tar.gz -C Dataset-5
 rm wget-1.17.1.tar.gz
@@ -93,7 +98,7 @@ cd Dataset-5/wget-1.17.1/
 mkdir -p obj-llvm
 cd obj-llvm
 CC=wllvm ../configure \
-      --disable-nls \
+      --with-gnutls \
       CFLAGS="-g -O0 -Xclang  -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
 make -j $(nproc)
 cd src
@@ -103,5 +108,23 @@ cd $ROOTDIR
 
 cp Dataset-5/wget-1.17.1/obj-llvm/src/*.bc bitcode_files/
 
-cp Dataset-3/tcpdump/tcpdump.bc bitcode_files/
-cp Dataset-3/binutils/obj-llvm/bc/readelf.bc Dataset-3/binutils/obj-llvm/bc/objdump.bc bitcode_files/
+# curl
+wget https://github.com/curl/curl/archive/refs/tags/curl-7_47_0.tar.gz
+mkdir -p Dataset-5/curl-7_47_0/ && tar -xf curl-7_47_0.tar.gz -C Dataset-5/curl-7_47_0/ --strip-components=1
+rm curl-7_47_0.tar.gz
+
+cd Dataset-5/curl-7_47_0/
+./buildconf
+# mkdir -p obj-llvm
+# cd obj-llvm
+CC=wllvm ./configure \
+      --enable-warnings --enable-werror \
+      --with-openssl \
+      CFLAGS="-g -O0 -Xclang  -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
+make -j $(nproc)
+cd src
+find . -executable -type f | xargs -I '{}' extract-bc '{}'
+
+cd $ROOTDIR
+
+cp Dataset-5/curl-7_47_0/obj-llvm/src/*.bc bitcode_files/
