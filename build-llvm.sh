@@ -8,7 +8,7 @@ export FORCE_UNSAFE_CONFIGURE=1
 ROOTDIR=$(pwd)
 
 # Build and install LLVM
-git clone https://github.com/llvm/llvm-project.git 
+git clone --depth 1 https://github.com/llvm/llvm-project.git 
 cd llvm-project/
 git checkout llvmorg-12.0.1
 mkdir build

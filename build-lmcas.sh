@@ -5,9 +5,11 @@ export LLVM_VERSION=12
 export CC=/usr/local/bin/clang
 export CXX=/usr/local/bin/clang++
 export LLVM_CONFIG_BINARY=/usr/local/bin/llvm-config
-export LLVM_LINK_NAME=/usr/local/bin/llvm-link
-export LLVM_AR_NAME=/usr/local/bin/llvm-ar
-export LLVM_COMPILER=/usr/local/bin/clang
+export LLVM_LINK_NAME=llvm-link
+export LLVM_AR_NAME=llvm-ar
+export LLVM_COMPILER=clang
+
+wllvm-sanity-checker
 
 ROOTDIR=$(pwd)
 
@@ -21,7 +23,7 @@ mkdir -p $ROOTDIR/bin
 
 echo "Building Partial Interpretation"
 echo "Installing klee-uclibc"
-    git clone https://github.com/klee/klee-uclibc.git || true
+    git clone --depth 1 https://github.com/klee/klee-uclibc.git || true
     pushd klee-uclibc
     ./configure --make-llvm-lib --with-llvm-config=/usr/local/bin/llvm-config
     make -j $(nproc)
