@@ -19,7 +19,13 @@ LLVM_VERSION=12
          iputils-ping \
          libibverbs-dev \
          libncursesw5  \
-         libncursesw5-dev 
+         libncursesw5-dev \
+         golang-go
+
+# install gllvm
+go get github.com/SRI-CSL/gllvm/cmd/...
+
+export PATH=$PATH:$(go env GOPATH)/bin
 
 echo "Installing dependencies.2"
 
