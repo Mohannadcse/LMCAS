@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 LLVM_VERSION=12
 
 RED='\033[0;31m'
@@ -66,7 +68,7 @@ cp $appFullPath ${app}_orig.bc
 echo -e "${RED} Run Neck Identification...${NC}"
 start=`date +%s`
 
-../neck-identification/build/tools/neck/neck -m ${app}_orig.bc -c ../neck-identification/config/cmd-tool-config.json --annotate --function-local-points-to-info-wo-globals
+# ../neck-identification/build/tools/neck/neck -m ${app}_orig.bc -c ../neck-identification/config/cmd-tool-config.json --annotate --function-local-points-to-info-wo-globals
 
 end=`date +%s`
 runtime=$((end-start))
@@ -75,8 +77,8 @@ echo -e "\nRun Neck Identification took: ${runtime}s!\n"
 echo -e "${RED} Run Partial Interpreter...${NC}"
 start=`date +%s`
 
-$BIN/klee --libc=uclibc --posix-runtime --dump-file gbls.txt ${app}_orig_neck.ll $args
-$BIN/klee --libc=uclibc --posix-runtime --dump-file bbs.txt --dump-bbs ${app}_orig_neck.ll $args
+# $BIN/klee --libc=uclibc --posix-runtime --dump-file gbls.txt ${app}_orig_neck.ll $args
+# $BIN/klee --libc=uclibc --posix-runtime --dump-file bbs.txt --dump-bbs ${app}_orig_neck.ll $args
 
 end=`date +%s`
 runtime=$((end-start))
