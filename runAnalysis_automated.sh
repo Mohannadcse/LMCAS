@@ -66,7 +66,7 @@ cp $appFullPath ${app}_orig.bc
 echo -e "${RED} Run Neck Identification...${NC}"
 start=`date +%s`
 
-../neck-identification/build/tools/neck/neck -m ${app}_orig.bc -c ../neck-identification/config/cmd-tool-config.json --annotate
+../neck-identification/build/tools/neck/neck -m ${app}_orig.bc -c ../neck-identification/config/cmd-tool-config.json --annotate --function-local-points-to-info-wo-globals
 
 end=`date +%s`
 runtime=$((end-start))
@@ -173,6 +173,14 @@ then
     gcc -O2 ${app}_cu.o -o ${app}_cu -no-pie
 fi
 
+if [[ $app == *"knockd"* ]]
+then
+    clang ${app}_orig.bc -lpcap -o ${app}_orig
+    clang ${app}_cc.bc -lpcap -o ${app}_cc
+    clang ${app}_cp.bc -lpcap -o ${app}_cp
+    clang ${app}_ps.bc -lpcap -o ${app}_ps
+    clang ${app}_cu.bc -lpcap -o ${app}_cu
+fi
 
 runSize=`size ${app}_orig`
 size_orig=`echo $runSize | cut -d ' ' -f10`

@@ -142,3 +142,20 @@ find . -executable -type f | xargs -I '{}' extract-bc '{}'
 cd $ROOTDIR
 
 cp Dataset-5/curl-7_47_0/obj-llvm/src/*.bc bitcode_files/
+
+# knockd
+wget https://github.com/shoaibCS/TRIMMER-applications/raw/master/trimmer/knockd/knockd-0.5.tar.gz
+
+mkdir -p Dataset-5/knockd-0.5/ && tar -xf knockd-0.5.tar.gz -C Dataset-5/knockd-0.5/ --strip-components=1
+rm knockd-0.5.tar.gz
+
+cd Dataset-5/knockd-0.5/
+CC=wllvm ./configure \
+      CFLAGS="-g -O0 -Xclang -disable-O0-optnone -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
+sed -i 's/-g -Wall -pedantic -fno-exceptions/-Wall -pedantic -fno-exceptions -Xclang -disable-O0-optnone/g' ./Makefile
+CC=wllvm make -j $(nproc)
+find . -executable -type f | xargs -I '{}' extract-bc '{}'
+
+cd $ROOTDIR
+
+cp Dataset-5/knockd-0.5/knockd.bc bitcode_files/

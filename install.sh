@@ -19,7 +19,8 @@ LLVM_VERSION=12
          iputils-ping \
          libibverbs-dev \
          libncursesw5  \
-         libncursesw5-dev 
+         libncursesw5-dev \
+         libpcap-dev
 
 echo "Installing dependencies.2"
 
