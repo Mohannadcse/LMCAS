@@ -2,9 +2,6 @@
 
 LLVM_VERSION=12
 
-RED='\033[0;31m'
-NC='\e[0m' # No Color
-
 #i noticed this is required while debloating tcpdump
 #export LLVM_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer-$LLVM_VERSION
 
@@ -15,11 +12,11 @@ export BIN=$ROOTDIR/bin
 
 function usage()
 {
-    echo -e "${RED} Syntax: ./runAnalysis.sh --file=path/to/bitcode.bc${NC} --args=partial inputs"
-    echo -e "${RED} if there are spaces in the partial inputs, then please use${NC} double qutation"
-    echo -e "${RED} Examples: ${NC}"
-    echo -e "${RED} ./runAnalysis.sh --file:wc.bc --args:-l${NC}"
-    echo -e "${RED} ./runAnalysis.sh --file:tcpdump.bc --args:\"-i lo\" ${NC}"
+    echo "Syntax: ./runAnalysis.sh --file=path/to/bitcode.bc --args=partial inputs"
+    echo "if there are spaces in the partial inputs, then please use double qutation"
+    echo "Examples: "
+    echo "./runAnalysis.sh --file:wc.bc --args:-l"
+    echo "./runAnalysis.sh --file:tcpdump.bc --args:\"-i lo\" "
     exit 1
 }
 
@@ -38,7 +35,7 @@ while [ "$1" != "" ]; do
             args=$VALUE
             ;;
         *)
-            echo -e "${RED} ERROR: unknown parameter \"$PARAM\"${NC}"
+            echo "ERROR: unknown parameter \"$PARAM\""
             usage
             ;;
     esac
@@ -49,75 +46,45 @@ if [ "$F" == "" ] || [ "$args" == "" ]; then
     usage
 fi
 
-echo -e "${RED} Bitcode File is $F"${NC};
-echo -e "${RED} Args is $args"${NC};
+echo "Bitcode File is $F";
+echo "Args is $args";
 
-appWithExt=$(basename $F)
-ext=${appWithExt##*.}
-app=$(basename $F .$ext)
+app=$(basename $F .bc)
 appFullPath=$(realpath $F)
 
-echo -e "${RED} AppName: $app${NC}"
+echo "AppName: $app"
 mkdir -p debloate_${app}
 pushd debloate_${app}
 
 cp $appFullPath ${app}_orig.bc
 
-echo -e "${RED} Run Neck Identification...${NC}"
-start=`date +%s`
+echo "Run KLEE..."
 
-../neck-identification/build/tools/neck/neck -m ${app}_orig.bc -c ../neck-identification/config/cmd-tool-config.json --annotate
-
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nRun Neck Identification took: ${runtime}s!\n"
-
-echo -e "${RED} Run Partial Interpreter...${NC}"
-start=`date +%s`
-
-$BIN/klee --libc=uclibc --posix-runtime --dump-file gbls.txt ${app}_orig_neck.ll $args
-$BIN/klee --libc=uclibc --posix-runtime --dump-file bbs.txt --dump-bbs ${app}_orig_neck.ll $args
-
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nRun Partial Interpreter took: ${runtime}s!\n"
-
-echo -e "${RED} Run Constant Conversion...${NC}"
-start=`date +%s`
+$BIN/klee --libc=uclibc --posix-runtime --dump-file gbls.txt $appFullPath $args
+$BIN/klee --libc=uclibc --posix-runtime --dump-file bbs.txt --dump-bbs $appFullPath $args
 
 #I add the file name to the stringVars to exclude the lines that contain the file name
 bitcodeName=`basename $F`
-sed -i "1i$bitcodeName" stringVarsLcl.txt
-sed -i "1i$bitcodeName" stringVarsGbls.txt
+sed -i "1i$bitcodeName" stringVars.txt
 
+echo "Run Constant Conversion..."
 opt -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat \
-    -gblInt=gbls.txt\
+    -globals=gbls.txt\
     -plocals=primitiveLocals.txt \
 	-clocals=customizedLocals.txt\
     -ptrStructlocals=ptrToStructLocals.txt \
     -ptrToPrimLocals=ptrToPrimitiveLocals.txt \
-    -stringVarsLcl=stringVarsLcl.txt  \
-    -stringVarsGbl=stringVarsGbls.txt \
- 	-bbfile=bbs.txt -appName=${app} ${app}_orig_neck.ll -verify -o ${app}_cc.bc
+    -stringVars=stringVars.txt  \
+ 	-bbfile=bbs.txt -appName=${app} ${app}_orig.bc -verify -o ${app}_cc.bc
 
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nRun Constant Conversion took: ${runtime}s!\n"
-
-echo -e "${RED} Run MultiStage Simplifications...${NC}"
-start=`date +%s`
-
+echo "Run MultiStage Simplifications..."
 opt -sccp -instsimplify ${app}_cc.bc -o ${app}_cp.bc
 opt -strip -simplifycfg ${app}_cp.bc -o ${app}_ps.bc
 opt -load $ROOTDIR/LLVM_Passes/build/Debloat/libLLVMDebloat.so -debloat -cleanUp \
     ${app}_ps.bc -verify -o ${app}_cu.bc
 
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nRun MultiStage Simplifications took: ${runtime}s!\n"
 
-echo -e "${RED} Generate binay files...${NC}"
-start=`date +%s`
+echo "Generate binay files..."
 
 tcpdumpFlg=0
 if [[ $app == *"tcpdump"* ]]
@@ -194,13 +161,8 @@ runSize=`size ${app}_cu`
 size_cu=`echo $runSize | cut -d ' ' -f10`
 echo size_cu=${size_cu}
 
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nGenerate binay files: ${runtime}s!\n"
 
-echo -e "${RED} Collect Statistical info...${NC}"
-start=`date +%s`
-
+echo "Collect Statistical info..."
 opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
  -Pprofiler -size=${size_orig} -o /dev/null ${app}_orig.bc
 
@@ -220,24 +182,12 @@ opt -load $ROOTDIR/LLVM_Passes/build/Profiler/libLLVMPprofiler.so \
 #rm *.o 
 popd
 
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nCollect Statistical info took: ${runtime}s!\n"
-
 # verify tests on coreutils
+cp debloate_${app}/${app}_orig benchmarks/core-utils/binaries
+cp debloate_${app}/${app}_cu benchmarks/core-utils/binaries
 
-echo -e "${RED} Running verifier tests${NC}"
-start=`date +%s`
-
-cp debloate_${app}/${app}_orig benchmarks/binaries
-cp debloate_${app}/${app}_cu benchmarks/binaries
-
-pushd benchmarks/${app}
+pushd benchmarks/core-utils/${app}
 
 python3 run.py verify
 
 popd
-
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nRunning verifier tests took: ${runtime}s!\n"

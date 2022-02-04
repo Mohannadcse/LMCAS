@@ -104,6 +104,20 @@ make -j $(nproc)
 cd src
 find . -executable -type f | xargs -I '{}' extract-bc '{}'
 
+cd ../..
+
+git clone https://github.com/peter-leonov/mini_httpd.git
+cd mini_httpd/
+git checkout tags/v1.19
+
+sed -i 's/CC =		/CC? = /g' ./Makefile
+sed -i 's/-O/ -Xclang -disable-O0-optnone/g' ./Makefile
+
+CC=wllvm make -j $(nproc)
+
+
+
+
 cd $ROOTDIR
 
 cp Dataset-5/wget-1.17.1/obj-llvm/src/*.bc bitcode_files/
