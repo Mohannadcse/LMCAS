@@ -3,6 +3,8 @@
 export LLVM_COMPILER=clang
 export LLVM_COMPILER_PATH=/usr/local/bin
 
+wllvm-sanity-checker
+
 ROOTDIR=$(pwd)
 
 mkdir bitcode_files
@@ -123,25 +125,21 @@ cd $ROOTDIR
 cp Dataset-5/wget-1.17.1/obj-llvm/src/*.bc bitcode_files/
 
 # curl
-wget https://github.com/curl/curl/archive/refs/tags/curl-7_47_0.tar.gz
-mkdir -p Dataset-5/curl-7_47_0/ && tar -xf curl-7_47_0.tar.gz -C Dataset-5/curl-7_47_0/ --strip-components=1
-rm curl-7_47_0.tar.gz
+wget https://github.com/shoaibCS/TRIMMER-applications/raw/master/trimmer/curl/curl-7.47.0.tar.gz
+mkdir -p Dataset-5/curl-7.47.0/ && tar -xf curl-7.47.0.tar.gz -C Dataset-5/curl-7.47.0/ --strip-components=1
+rm curl-7.47.0.tar.gz
 
-cd Dataset-5/curl-7_47_0/
-./buildconf
-# mkdir -p obj-llvm
-# cd obj-llvm
-CC=wllvm ./configure \
-      --enable-warnings --enable-werror \
-      --with-openssl \
-      CFLAGS="-g -O0 -Xclang  -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
+cd Dataset-5/curl-7.47.0/
+CC=wllvm CFLAGS="-g -O0 -Xclang -disable-O0-optnone -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__" ./configure --with-openssl
+sed -i 's/CFLAGS = -Xclang -disable-O0-optnone -Qunused-arguments -Os/CFLAGS = -Xclang -disable-O0-optnone/g' src/Makefile
 make -j $(nproc)
-cd src
-find . -executable -type f | xargs -I '{}' extract-bc '{}'
+sudo make install
+cp /usr/local/bin/curl .
+extract-bc ./curl
 
 cd $ROOTDIR
 
-cp Dataset-5/curl-7_47_0/obj-llvm/src/*.bc bitcode_files/
+cp Dataset-5/curl-7.47.0/curl.bc bitcode_files/
 
 # knockd
 wget https://github.com/shoaibCS/TRIMMER-applications/raw/master/trimmer/knockd/knockd-0.5.tar.gz
