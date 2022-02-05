@@ -8,9 +8,15 @@ lib/
 .git/
 .gitignore
 .gitmodules
+.vscode
 
 README.md
 
-Dataset-1/coreutils-8.32
+
+Dataset-1
+Dataset-3
+Dataset-5
 klee-uclibc
-benchmark/core-utils/binaries
+artifacts_bitcode
+benchmark
+bitcode_files
