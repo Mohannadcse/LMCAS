@@ -9,7 +9,7 @@ export LLVM_LINK_NAME=llvm-link
 export LLVM_AR_NAME=llvm-ar
 export LLVM_COMPILER=clang
 
-wllvm-sanity-checker
+# wllvm-sanity-checker
 
 ROOTDIR=$(pwd)
 
