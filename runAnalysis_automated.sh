@@ -2,6 +2,9 @@
 
 set -x
 
+# for avoiding memory issue while running phasar
+ulimit -s 16777216
+
 LLVM_VERSION=12
 
 RED='\033[0;31m'
