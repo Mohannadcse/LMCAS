@@ -19,11 +19,11 @@ def main():
     if len(sys.argv) != 2 and len(sys.argv) != 3:
         usage()
 
-    ORIG_BIN = BIN_PATH + '/wget_orig'
-    DEBLOATED_BIN = BIN_PATH + '/wget_cu'
-    TESTFILE = BIN_PATH + '/wgetrc'
+    ORIG_BIN = BIN_PATH + '/curl_orig'
+    DEBLOATED_BIN = BIN_PATH + '/curl_cu'
+    # TESTFILE = BIN_PATH + '/curlrc'
 
-    original_test_cases = ['--config ' + TESTFILE + ' https://google.com']
+    original_test_cases = ['--compress --http1.1 --IPV4 --ssl https://google.com']
     debloated_test_cases = ['https://google.com']
 
     if sys.argv[1] == 'original':
