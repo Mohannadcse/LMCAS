@@ -1,5 +1,8 @@
 # Building LMCAS Docker Machine #
 
+[![Docker](https://github.com/Mohannadcse/LMCAS_Docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/Mohannadcse/LMCAS_Docker/actions/workflows/docker-publish.yml)
+
+
 1. Clone the repository (or unzip the compressed file)
    `git clone https://github.com/Mohannadcse/LMCAS_Docker`
 2. execute the following commands to build and run LMCAS. The build process takes sometime because it involves downloading and building both of LLVM and KLEE.
