@@ -242,15 +242,19 @@ echo -e "\nCollect Statistical info took: ${runtime}s!\n"
 echo -e "${RED} Running verifier tests${NC}"
 start=`date +%s`
 
-cp debloate_${app}/${app}_orig benchmarks/binaries
-cp debloate_${app}/${app}_cu benchmarks/binaries
+if test -f "debloate_${app}/${app}_orig"; then
+    if test -f "debloate_${app}/${app}_cu"; then
+        cp debloate_${app}/${app}_orig benchmarks/binaries
+        cp debloate_${app}/${app}_cu benchmarks/binaries
 
-pushd benchmarks/${app}
+        pushd benchmarks/${app}
 
-python3 run.py verify
+        python3 run.py verify
 
-popd
+        popd
 
-end=`date +%s`
-runtime=$((end-start))
-echo -e "\nRunning verifier tests took: ${runtime}s!\n"
+        end=`date +%s`
+        runtime=$((end-start))
+        echo -e "\nRunning verifier tests took: ${runtime}s!\n"
+    fi
+fi
