@@ -20,7 +20,8 @@ def main():
 
     ORIG_BIN = BIN_PATH + '/echo_orig'
     DEBLOATED_BIN = BIN_PATH + '/echo_cu'
-    
+    TIME = "/usr/bin/time -v "
+
     original_test_cases = ['-E testinput\\"\\']
     debloated_test_cases = ['testinput\\"\\']
 
@@ -35,6 +36,9 @@ def main():
         debloateded = benchmark.debloated(DEBLOATED_BIN, debloated_test_cases)
 
         ret = benchmark.verify(originaled, debloateded)
+    elif sys.argv[1] == 'measure':
+        originaled = benchmark.original(TIME + ORIG_BIN, original_test_cases)
+        debloateded = benchmark.debloated(TIME + DEBLOATED_BIN, debloated_test_cases)
 
     else:
         usage()
