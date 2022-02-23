@@ -40,8 +40,9 @@ def main():
 
         ret = benchmark.verify(originaled, debloateded)
     elif sys.argv[1] == 'measure':
-        originaled = benchmark.original(TIME + ORIG_BIN, original_test_cases)
-        debloateded = benchmark.debloated(TIME + DEBLOATED_BIN, debloated_test_cases)
+        originaled = benchmark.original_err(TIME + ORIG_BIN, original_test_cases)
+        debloateded = benchmark.debloated_err(TIME + DEBLOATED_BIN, debloated_test_cases)
+        benchmark.measure(originaled, debloateded)
 
     else:
         usage()
