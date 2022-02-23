@@ -21,6 +21,7 @@ def main():
 
     ORIG_BIN = BIN_PATH + '/knockd_orig'
     DEBLOATED_BIN = BIN_PATH + '/knockd_cu'
+    TIME = "/usr/bin/time -v "
 
     original_test_cases = ['-i eth0']
     debloated_test_cases = ['']
@@ -36,6 +37,10 @@ def main():
         debloateded = benchmark.debloated(DEBLOATED_BIN, debloated_test_cases)
 
         ret = benchmark.verify(originaled, debloateded)
+    elif sys.argv[1] == 'measure':
+        originaled = benchmark.original_err(TIME + ORIG_BIN, original_test_cases)
+        debloateded = benchmark.debloated_err(TIME + DEBLOATED_BIN, debloated_test_cases)
+        benchmark.measure(originaled, debloateded)
 
     else:
         usage()
