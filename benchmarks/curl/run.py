@@ -22,6 +22,7 @@ def main():
     ORIG_BIN = BIN_PATH + '/curl_orig'
     DEBLOATED_BIN = BIN_PATH + '/curl_cu'
     # TESTFILE = BIN_PATH + '/curlrc'
+    TIME = "/usr/bin/time -v "
 
     original_test_cases = ['--compress --http1.1 --IPV4 --ssl https://google.com']
     debloated_test_cases = ['https://google.com']
@@ -37,6 +38,10 @@ def main():
         debloateded = benchmark.debloated(DEBLOATED_BIN, debloated_test_cases)
 
         ret = benchmark.verify(originaled, debloateded)
+    elif sys.argv[1] == 'measure':
+        originaled = benchmark.original_err(TIME + ORIG_BIN, original_test_cases)
+        debloateded = benchmark.debloated_err(TIME + DEBLOATED_BIN, debloated_test_cases)
+        benchmark.measure(originaled, debloateded)
 
     else:
         usage()

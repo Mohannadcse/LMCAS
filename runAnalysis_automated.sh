@@ -250,6 +250,7 @@ if test -f "debloate_${app}/${app}_orig"; then
         pushd benchmarks/${app}
 
         python3 run.py verify
+        python3 run.py measure
 
         popd
 
