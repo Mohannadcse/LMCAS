@@ -57,6 +57,7 @@ cd $ROOTDIR
 cd Dataset-3
 git clone https://github.com/the-tcpdump-group/tcpdump.git tcpdump
 cd tcpdump
+git checkout -f tags/tcpdump-4.9.0-bp-1940-g6b1a867b
 cp $ROOTDIR/Dataset-3/tcpdump.c .
 ln -s ../libpcap libpcap
 sed -i "s/HASHNAMESIZE 4096/HASHNAMESIZE 8/" addrtoname.c
@@ -72,8 +73,8 @@ cp Dataset-3/tcpdump/tcpdump.bc bitcode_files/
 cd Dataset-3
 git clone https://sourceware.org/git/binutils-gdb.git binutils
 cd binutils
-cp $ROOTDIR/Dataset-3/objdump.c $ROOTDIR/Dataset-3/readelf.c binutils
 git checkout -f 427234c78bddbea7c94fa1a35e74b7dfeabeeb43
+cp $ROOTDIR/Dataset-3/objdump.c $ROOTDIR/Dataset-3/readelf.c binutils
 find . -name configure -exec sed -i "s/ -Werror//" '{}' \;
 find . -name "Makefile*" -exec sed -i '/^SUBDIRS/s/ doc po//' '{}' \;
 mkdir -p obj-llvm/bc
