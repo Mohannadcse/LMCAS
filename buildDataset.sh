@@ -57,6 +57,7 @@ cd $ROOTDIR
 cd Dataset-3
 git clone https://github.com/the-tcpdump-group/tcpdump.git tcpdump
 cd tcpdump
+git fetch --all --tags --prune
 git checkout -f tags/tcpdump-4.9.0-bp-1940-g6b1a867b
 cp $ROOTDIR/Dataset-3/tcpdump.c .
 ln -s ../libpcap libpcap
@@ -92,7 +93,7 @@ cp Dataset-3/binutils/obj-llvm/bc/readelf.bc Dataset-3/binutils/obj-llvm/bc/objd
 cd Dataset-3
 git clone git@github.com:awaw/dnsproxy.git
 cd dnsproxy/
-bootstrap
+./bootstrap
 CC=wllvm ./configure CFLAGS="-g -O0"
 make -j $(nproc)
 extract-bc dnsproxy
