@@ -13,6 +13,9 @@ export LLVM_COMPILER=clang
 
 ROOTDIR=$(pwd)
 
+echo "Installing WLLVM" 
+pip3 install -U lit tabulate wllvm
+
 echo "Building Neck Identification" 
     pushd neck-identification
     ./build.sh

@@ -14,12 +14,12 @@ COPY install.sh .
 RUN bash ./install.sh
 
 USER root
+
+WORKDIR /LMCAS
+
 RUN echo "Installing WLLVM"  \
     pip3 install -U lit tabulate wllvm
 
-
-
-WORKDIR /LMCAS
 
 COPY build-llvm.sh .
 RUN bash /LMCAS/build-llvm.sh

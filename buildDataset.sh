@@ -127,13 +127,18 @@ find . -executable -type f | xargs -I '{}' extract-bc '{}'
 
 cd $ROOTDIR
 
+
 cd Dataset-5
+
+# the file htpasswd.c doesn't build correctly, but mini-httpd builds correctly
+
 git clone https://github.com/peter-leonov/mini_httpd.git
 cd mini_httpd/
 git checkout tags/v1.19
 
 sed -i 's/CC =		/CC? = /g' ./Makefile
 sed -i 's/-O/ -Xclang -disable-O0-optnone/g' ./Makefile
+sed -i 's/LDFLAGS/#LDFLAGS/g' ./Makefile
 
 CC=wllvm make -j $(nproc)
 extract-bc ./mini_httpd
