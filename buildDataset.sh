@@ -158,4 +158,17 @@ find . -executable -type f | xargs -I '{}' extract-bc '{}'
 
 cd $ROOTDIR
 
+# diffutils
+wget https://ftp.gnu.org/gnu/diffutils/diffutils-2.8.tar.gz
+mkdir -p Dataset-5/diffutils-2.8/ && tar -xf diffutils-2.8.tar.gz -C Dataset-5/diffutils-2.8/ --strip-components=1
+rm diffutils-2.8.tar.gz
+
+cd Dataset-5/diffutils-2.8/ 
+
+CC=wllvm CFLAGS="-g -O0 -Xclang -disable-O0-optnone -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__" ./configure 
+make -j $(nproc)
+extract-bc src/diff
+
+cd $ROOTDIR
+
 cp Dataset-5/knockd-0.5/knockd.bc bitcode_files/
