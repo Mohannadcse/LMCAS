@@ -181,3 +181,57 @@ find . -executable -type f | xargs -I '{}' extract-bc '{}'
 cd $ROOTDIR
 
 cp Dataset-5/knockd-0.5/knockd.bc bitcode_files/
+
+
+# memcached
+# TODO: Get DEPS
+# TODO: wget https://github.com/shamedgh/temporal-specialization/blob/master/application-sourcecodes/libevent-2.1.11-stable.tar.gz?raw=true
+wget https://memcached.org/files/memcached-1.4.25.tar.gz
+
+mkdir -p Dataset-5/memcached-1.4.25/ && tar -xf memcached-1.4.25.tar.gz -C Dataset-5/memcached-1.4.25/ --strip-components=1
+rm memcached-1.4.25.tar.gz
+
+cd Dataset-5/memcached-1.4.25/
+CC=wllvm ./configure
+sed -i 's/CFLAGS = -g -O2 -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls/CFLAGS = -Xclang -disable-O0-optnone -O0/g' ./Makefile
+CC=wllvm make -j $(nproc)
+extract-bc memcached.bc
+
+cd $ROOTDIR
+
+cp Dataset-5/memcached-1.4.25/memcached.bc bitcode_files/
+
+
+# bind9
+wget https://github.com/shamedgh/temporal-specialization/blob/master/application-sourcecodes/bind9.tar.gz?raw=true
+
+mkdir -p Dataset-5/bind9/ && tar -xf bind9.tar.gz?raw=true -C Dataset-5/bind9/ --strip-components=1
+rm bind9.tar.gz?raw=true
+
+cd Dataset-5/bind9/
+CC=wllvm ./configure --without-python --disable-linux-caps
+sed -i 's/CFLAGS = -g -O2 -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls/CFLAGS = -Xclang -disable-O0-optnone -O0/g' ./Makefile
+CC=wllvm make -j $(nproc)
+extract-bc bin/named/named
+
+cd $ROOTDIR
+
+cp Dataset-5/bind9/bin/named/named.bc bitcode_files/
+
+
+# redis
+wget https://github.com/shamedgh/temporal-specialization/blob/master/application-sourcecodes/redis-5.0.7.tar.gz?raw=true
+
+# TODO: Get DEPS
+
+mkdir -p Dataset-5/redis-5.0.7/ && tar -xf redis-5.0.7.tar.gz?raw=true -C Dataset-5/redis-5.0.7/ --strip-components=1
+rm redis-5.0.7.tar.gz?raw=true
+
+cd Dataset-5/redis-5.0.7/
+sed -i 's/CFLAGS = -g -O2 -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls/CFLAGS = -Xclang -disable-O0-optnone -O0/g' ./Makefile
+CC=wllvm make -j $(nproc)
+extract-bc bin/redis
+
+cd $ROOTDIR
+
+cp Dataset-5/redis-5.0.7/bin/redis/redis.bc bitcode_files/
