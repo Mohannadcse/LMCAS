@@ -27,8 +27,6 @@ find . -executable -type f | xargs -I '{}' extract-bc '{}'
 
 cd $ROOTDIR
 
-echo "Preparing Dataset-2"
-
 
 mkdir Dataset-3 && cd Dataset-3
 echo "Preparing Dataset-3"
@@ -53,9 +51,10 @@ extract-bc tcpdump
 cd ..
 
 #Binutils
+echo "Preparing Dataset-2"
 git clone https://sourceware.org/git/binutils-gdb.git binutils
 cd binutils
-cp cd $ROOTDIR/Dataset-3/objdump.c cd $ROOTDIR/Dataset-3/readelf.c binutils
+cp $ROOTDIR/Dataset-3/objdump.c $ROOTDIR/Dataset-3/readelf.c binutils
 git checkout -f 427234c78bddbea7c94fa1a35e74b7dfeabeeb43
 find . -name configure -exec sed -i "s/ -Werror//" '{}' \;
 find . -name "Makefile*" -exec sed -i '/^SUBDIRS/s/ doc po//' '{}' \;
