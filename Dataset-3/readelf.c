@@ -4921,7 +4921,7 @@ parse_args (struct dump_data *dumpdata, int argc, char ** argv)
 	  usage (stderr);
 	}
     }
-    klee_dump_memory();
+    // klee_dump_memory();
   if (!do_dynamic && !do_syms && !do_reloc && !do_unwind && !do_sections
       && !do_segments && !do_header && !do_dump && !do_version
       && !do_histogram && !do_debugging && !do_arch && !do_notes
