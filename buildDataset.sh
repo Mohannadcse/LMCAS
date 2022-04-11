@@ -41,6 +41,7 @@ echo "Preparing Dataset-2"
 mkdir -p Dataset-2
 echo "TODO"
 
+
 echo "Preparing Dataset-3"
 mkdir -p Dataset-3
 
@@ -71,6 +72,7 @@ cd $ROOTDIR
 cp Dataset-3/tcpdump/tcpdump.bc bitcode_files/
 
 #Binutils
+
 cd Dataset-3
 git clone https://sourceware.org/git/binutils-gdb.git binutils
 cd binutils
@@ -177,6 +179,19 @@ CC=wllvm ./configure \
 sed -i 's/-g -Wall -pedantic -fno-exceptions/-Wall -pedantic -fno-exceptions -Xclang -disable-O0-optnone/g' ./Makefile
 CC=wllvm make -j $(nproc)
 find . -executable -type f | xargs -I '{}' extract-bc '{}'
+
+cd $ROOTDIR
+
+# diffutils
+wget https://ftp.gnu.org/gnu/diffutils/diffutils-2.8.tar.gz
+mkdir -p Dataset-5/diffutils-2.8/ && tar -xf diffutils-2.8.tar.gz -C Dataset-5/diffutils-2.8/ --strip-components=1
+rm diffutils-2.8.tar.gz
+
+cd Dataset-5/diffutils-2.8/ 
+
+CC=wllvm CFLAGS="-g -O0 -Xclang -disable-O0-optnone -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__" ./configure 
+make -j $(nproc)
+extract-bc src/diff
 
 cd $ROOTDIR
 
