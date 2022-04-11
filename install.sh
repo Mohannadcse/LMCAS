@@ -21,7 +21,9 @@ LLVM_VERSION=12
          libncursesw5  \
          libncursesw5-dev \
          libpcap-dev \
-         knockd # for /etc/knockd.conf
+         knockd \
+         libssl-dev \
+         libuv1-dev
 
 echo "Installing dependencies.2"
 
