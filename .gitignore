@@ -139,9 +139,15 @@ cython_debug/
 
 bin/
 Dataset-1/coreutils-8.32/
-artifacts_bitcode/
+Dataset-2
+Dataset-3
+Dataset-4
+Dataset-5
+
 artifacts_bitcode/
 debloate*
 include/
 Dataset-5
 bitcode_files
+benchmarks/binaries/*_orig
+benchmarks/binaries/*_cu
