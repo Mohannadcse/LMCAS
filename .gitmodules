@@ -5,6 +5,7 @@
 [submodule "partial-interpretation"]
 	path = partial-interpretation
 	url = git@github.com:Mohannadcse/Partial_interpreter.git
+
 [submodule "neck-identification"]
 	path = neck-identification
-	url = irb-git@git.cs.uni-paderborn.de:pdschbrt/neck-identification.git
+	url = git@github.com:secure-software-engineering/neck.git
