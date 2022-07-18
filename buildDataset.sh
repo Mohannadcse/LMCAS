@@ -199,18 +199,39 @@ cp Dataset-5/knockd-0.5/knockd.bc bitcode_files/
 
 
 # memcached
-# TODO: Get DEPS
-# TODO: wget https://github.com/shamedgh/temporal-specialization/blob/master/application-sourcecodes/libevent-2.1.11-stable.tar.gz?raw=true
-wget https://memcached.org/files/memcached-1.4.25.tar.gz
+wget https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
 
-mkdir -p Dataset-5/memcached-1.4.25/ && tar -xf memcached-1.4.25.tar.gz -C Dataset-5/memcached-1.4.25/ --strip-components=1
-rm memcached-1.4.25.tar.gz
+mkdir -p Dataset-5/libevent-2.0.21/ && tar -xf libevent-2.0.21-stable.tar.gz -C Dataset-5/libevent-2.0.21/ --strip-components=1
+rm libevent-2.0.21-stable.tar.gz
+
+cd Dataset-5/libevent-2.0.21/
+LIBEVENT_INSTALL=$(pwd)/libevent
+./buildconf
+mkdir -p $LIBEVENT_INSTALL
+CC=wllvm ./configure --prefix=$LIBEVENT_INSTALL --disable-openssl
+CC=wllvm make -j $(nproc)
+CC=wllvm make install
+
+# Generate libevent.bca
+extract-bc $LIBEVENT_INSTALL/lib/libevent.a
+
+cd $ROOTDIR
+
+wget https://github.com/shamedgh/temporal-specialization/blob/master/application-sourcecodes/memcached.tar.gz?raw=true
+
+mkdir -p Dataset-5/memcached-1.4.25/ && tar -xf memcached.tar.gz?raw=true -C Dataset-5/memcached-1.4.25/ --strip-components=1
+rm memcached.tar.gz?raw=true
 
 cd Dataset-5/memcached-1.4.25/
-CC=wllvm ./configure
-sed -i 's/CFLAGS = -g -O2 -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls/CFLAGS = -Xclang -disable-O0-optnone -O0/g' ./Makefile
-CC=wllvm make -j $(nproc)
-extract-bc memcached.bc
+
+MEMCACHED_INSTALL=$(pwd)/memcached
+mkdir -p $MEMCACHED_INSTALL
+
+./autogen.sh
+
+CC=clang ./configure --prefix=${MEMCACHED_INSTALL} --with-libevent=${LIBEVENT_INSTALL}
+CC=clang make -j $(nproc) #TODO: This step does not work.
+extract-bc $MEMCACHED_INSTALL/lib/memcached.bc
 
 cd $ROOTDIR
 
@@ -233,11 +254,10 @@ cd $ROOTDIR
 
 cp Dataset-5/bind9/bin/named/named.bc bitcode_files/
 
+cd $ROOTDIR
 
 # redis
 wget https://github.com/shamedgh/temporal-specialization/blob/master/application-sourcecodes/redis-5.0.7.tar.gz?raw=true
-
-# TODO: Get DEPS
 
 mkdir -p Dataset-5/redis-5.0.7/ && tar -xf redis-5.0.7.tar.gz?raw=true -C Dataset-5/redis-5.0.7/ --strip-components=1
 rm redis-5.0.7.tar.gz?raw=true
@@ -250,3 +270,5 @@ extract-bc bin/redis
 cd $ROOTDIR
 
 cp Dataset-5/redis-5.0.7/bin/redis/redis.bc bitcode_files/
+
+cd $ROOTDIR
