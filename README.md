@@ -92,3 +92,16 @@ To measure the timing and memory usage information of the LMCAS pipeline
 ```
 
 To measure the timing and memory usage information of the original and debloated app, check the previous section
+
+
+# Citation
+```
+@INPROCEEDINGS{LMCAS,
+  title={Lightweight, Multi-Stage, Compiler-Assisted Application Specialization},
+  author={Alhanahnah, Mohannad and Jain, Rithik and Rastogi, Vaibhav and Jha, Somesh and Reps, Thomas},
+  booktitle={2022 IEEE 7th European Symposium on Security and Privacy (EuroS\&P)},
+  pages={251--269},
+  year={2022},
+  organization={IEEE}
+}
+```
