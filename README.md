@@ -12,6 +12,8 @@ docker run -it lmcas
 
 For a native Linux build,
 
+First, you need to download submodules using the command `git submodule update --init --recursive`
+
 ```
 ./install.sh
 ./build.sh
