@@ -14,17 +14,15 @@ mkdir bitcode_files
 echo "Preparing Dataset-1"
 mkdir -p  Dataset-1
 
-cd  Dataset-1
 wget https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.gz
 tar -xf coreutils-8.32.tar.gz -C Dataset-1
 rm coreutils-8.32.tar.gz
-cd $ROOTDIR
 
-find Dataset-1 -name \*.c -exec cp {} Dataset-1/coreutils-8.32/src \; 
+find annotated_Dataset-1 -name \*.c -exec cp {} Dataset-1/coreutils-8.32/src \;
 cd Dataset-1/coreutils-8.32/
 mkdir obj-llvm
 cd obj-llvm
-CC=wllvm ../configure \
+FORCE_UNSAFE_CONFIGURE=1 CC=wllvm ../configure \
       --disable-nls \
       CFLAGS="-g -O0 -Xclang  -D__NO_STRING_INLINES  -D_FORTIFY_SOURCE=0 -U__OPTIMIZE__"
 make -j $(nproc)
@@ -32,9 +30,9 @@ cd src
 find . -executable -type f | xargs -I '{}' extract-bc '{}'
 cd $ROOTDIR
 
-for f in `cat Dataset-1/Dataset-1-list.txt`
+for f in `cat annotated_Dataset-1/Dataset-1-list.txt`
 do
-	cp Dataset-1/coreutils-8.32/obj-llvm/src/"$f".bc bitcode_files/
+        cp Dataset-1/coreutils-8.32/obj-llvm/src/"$f".bc bitcode_files/
 done
 
 echo "Preparing Dataset-2"
